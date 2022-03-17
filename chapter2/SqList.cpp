@@ -13,7 +13,6 @@ typedef struct {
     int listSize;
 } SqList;
 
-
 void InitSqList(SqList &L) {
     int length = iniSize;
     L.listSize = length;
@@ -21,7 +20,7 @@ void InitSqList(SqList &L) {
     L.length = 0;
 }
 
-void InitSqList(SqList &L,int length) {
+void InitSqList(SqList &L, int length) {
     L.listSize = length;
     L.data = (int *) malloc(length * sizeof(int));
     L.length = 0;
@@ -29,6 +28,21 @@ void InitSqList(SqList &L,int length) {
 
 int Length(SqList &L) {
     return L.length;
+}
+
+/**
+ * 增加顺序表长度
+ * @param L
+ * @param length  需要扩充的长度
+ */
+void IncreaseSize(SqList &L, int length) {
+    int *p = L.data;
+    L.data = (int *) malloc(sizeof(int) * (L.listSize + length));
+    for (int i = 0; i < L.length; ++i) {
+        L.data[i] = p[i];
+    }
+    L.listSize += length;
+    free(p);
 }
 
 int LocateElem(SqList &L, int e) {
@@ -78,7 +92,8 @@ bool Empty(SqList &L) {
     return L.length == 0;
 }
 
-void DestroyList(SqList & L){
+void DestroyList(SqList &L) {
     free(L.data);
     L.length = 0;
 }
+

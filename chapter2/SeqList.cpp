@@ -2,9 +2,6 @@
 // Created by wolves on 2022/3/17.
 //
 
-#include <cstdlib>
-#include <cstdio>
-
 #define Maxsize 50
 
 typedef struct {
