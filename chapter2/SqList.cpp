@@ -48,24 +48,31 @@ void IncreaseSize(SqList &L, int length) {
 int LocateElem(SqList &L, int e) {
     for (int i = 0; i < L.length; ++i) {
         if (e == L.data[i]) {
-            return i;
+            return i + 1;
         }
     }
     return -1;
 }
 
 int GetElem(SqList &L, int i) {
-    return L.data[i];
+    return L.data[i - 1];
 }
 
+/**
+ * 插入元素
+ * @param L
+ * @param i
+ * @param e
+ * @return
+ */
 bool ListInsert(SqList &L, int i, int e) {
-    if (L.length == L.listSize) {
+    if (L.length + 1 >= L.listSize || i > L.length) {
         return false;
     }
-    for (int j = L.length; j > i; j--) {
+    for (int j = L.length; j >= i; j--) {
         L.data[j] = L.data[j - 1];
     }
-    L.data[i] = e;
+    L.data[i - 1] = e;
     L.length++;
     return true;
 }
@@ -74,9 +81,9 @@ bool ListDelete(SqList &L, int i, int &e) {
     if (L.length == 0 || i >= L.length) {
         return false;
     }
-    e = L.data[i];
+    e = L.data[i - 1];
     for (int j = i; j < L.length; ++j) {
-        L.data[j] = L.data[j + 1];
+        L.data[j - 1] = L.data[j];
     }
     L.length--;
     return true;
