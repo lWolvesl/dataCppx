@@ -3,6 +3,7 @@
 // 😚
 //
 #include "SqList.cpp"
+#include "iostream"
 
 using namespace std;
 
@@ -82,7 +83,12 @@ SqList exercises9(SqList &L1, SqList &L2) {
     return L3;
 }
 
-void exercises9(SqList &L){
+void exercises9(SqList &L, int m, int n) {
+    int *p = (int *) malloc(m * sizeof(int));
+    for (int i = 0; i < m; ++i) {
+        p[i] = L.data[m+i];
+        L.data[m+i];
+    }
 
 }
 
@@ -135,11 +141,19 @@ void testExercise8() {
     PrintList(L3);
 }
 
+void testExercises9() {
+    SqList L = createListOne();
+    exercises9(L, 4, 5);
+    printf("\n");
+    PrintList(L);
+}
+
 void testList2_2() {
     //testExercises1();
     //testExercises2();
     //testExercises3();
     //testExercises4x5();
     //testExercise6();
-    testExercise8();
+    //testExercise8();
+    testExercises9();
 }
