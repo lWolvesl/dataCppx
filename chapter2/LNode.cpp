@@ -5,25 +5,26 @@
 #include <cstdio>
 #include <cstdlib>
 
-typedef struct LNode{
+typedef struct LNode {
     int data;
     struct LNode *next;
-}LNode,*ListNode;
+} LNode, *ListNode;
 
-bool initLinkList(ListNode & L){
+bool initLinkList(ListNode &L) {
     L = NULL;
     return true;
 }
 
-bool Empty(ListNode & L){
+bool Empty(ListNode &L) {
     return L == NULL;
 }
 
-bool initLinkedList(ListNode & L){
-    L = (LNode *)malloc(sizeof(LNode));
-    if (L == NULL){
+bool initLinkedList(ListNode &L) {
+    L = (LNode *) malloc(sizeof(LNode));
+    if (L == NULL) {
         return false;
     }
     L->next = NULL;
     return true;
 }
+

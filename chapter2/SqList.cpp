@@ -4,6 +4,7 @@
 
 #include <cstdlib>
 #include <cstdio>
+#include <ctime>
 
 #define iniSize 10;
 
@@ -77,6 +78,15 @@ bool ListInsert(SqList &L, int i, int e) {
     return true;
 }
 
+bool ListAppend(SqList &L, int e) {
+    if (L.length + 1 > L.listSize) {
+        return false;
+    }
+    L.data[L.length] = e;
+    L.length++;
+    return true;
+}
+
 bool ListDelete(SqList &L, int i, int &e) {
     if (L.length == 0 || i >= L.length) {
         return false;
@@ -93,6 +103,7 @@ void PrintList(SqList &L) {
     for (int i = 0; i < L.length; ++i) {
         printf("%d  ", L.data[i]);
     }
+    printf("\n");
 }
 
 bool Empty(SqList &L) {
@@ -104,3 +115,14 @@ void DestroyList(SqList &L) {
     L.length = 0;
 }
 
+SqList createListOne() {
+    SqList L;
+    InitSqList(L);
+    srand(time(NULL));
+    for (int i = 0; i < 9; ++i) {
+        int rands = rand() % 10;
+        ListAppend(L,rands);
+    }
+    PrintList(L);
+    return L;
+}

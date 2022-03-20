@@ -78,24 +78,6 @@ build CMakeFiles/dataCpp.dir/main.cpp.o: CXX_COMPILER__dataCpp_Debug /Users/li/D
   OBJECT_DIR = CMakeFiles/dataCpp.dir
   OBJECT_FILE_DIR = CMakeFiles/dataCpp.dir
 
-build CMakeFiles/dataCpp.dir/chapter2/SqList.cpp.o: CXX_COMPILER__dataCpp_Debug /Users/li/Downloads/project/dataCpp/chapter2/SqList.cpp || cmake_object_order_depends_target_dataCpp
-  DEP_FILE = CMakeFiles/dataCpp.dir/chapter2/SqList.cpp.o.d
-  FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -std=gnu++14
-  OBJECT_DIR = CMakeFiles/dataCpp.dir
-  OBJECT_FILE_DIR = CMakeFiles/dataCpp.dir/chapter2
-
-build CMakeFiles/dataCpp.dir/chapter2/SeqList.cpp.o: CXX_COMPILER__dataCpp_Debug /Users/li/Downloads/project/dataCpp/chapter2/SeqList.cpp || cmake_object_order_depends_target_dataCpp
-  DEP_FILE = CMakeFiles/dataCpp.dir/chapter2/SeqList.cpp.o.d
-  FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -std=gnu++14
-  OBJECT_DIR = CMakeFiles/dataCpp.dir
-  OBJECT_FILE_DIR = CMakeFiles/dataCpp.dir/chapter2
-
-build CMakeFiles/dataCpp.dir/chapter2/LNode.cpp.o: CXX_COMPILER__dataCpp_Debug /Users/li/Downloads/project/dataCpp/chapter2/LNode.cpp || cmake_object_order_depends_target_dataCpp
-  DEP_FILE = CMakeFiles/dataCpp.dir/chapter2/LNode.cpp.o.d
-  FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -std=gnu++14
-  OBJECT_DIR = CMakeFiles/dataCpp.dir
-  OBJECT_FILE_DIR = CMakeFiles/dataCpp.dir/chapter2
-
 
 # =============================================================================
 # Link build statements for EXECUTABLE target dataCpp
@@ -104,7 +86,7 @@ build CMakeFiles/dataCpp.dir/chapter2/LNode.cpp.o: CXX_COMPILER__dataCpp_Debug /
 #############################################
 # Link the executable dataCpp
 
-build dataCpp: CXX_EXECUTABLE_LINKER__dataCpp_Debug CMakeFiles/dataCpp.dir/main.cpp.o CMakeFiles/dataCpp.dir/chapter2/SqList.cpp.o CMakeFiles/dataCpp.dir/chapter2/SeqList.cpp.o CMakeFiles/dataCpp.dir/chapter2/LNode.cpp.o
+build dataCpp: CXX_EXECUTABLE_LINKER__dataCpp_Debug CMakeFiles/dataCpp.dir/main.cpp.o
   FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk
   OBJECT_DIR = CMakeFiles/dataCpp.dir
   POST_BUILD = :

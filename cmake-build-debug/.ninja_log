@@ -1,5 +1,11 @@
 # ninja log v5
-216	248	1647453006794472869	dataCpp	6efe642ebfded573
-0	49	1647524894133605413	build.ninja	84a4cbc1cf8cf568
-1	216	1647453006761719246	CMakeFiles/dataCpp.dir/main.cpp.o	2c8c00062e245ba0
-1	28	1647452973012213560	CMakeFiles/dataCpp.dir/chapter2/SeqList.cpp.o	5e2b01c9c24e858d
+2	255	1647619481572045719	CMakeFiles/dataCpp.dir/chapter2/SqList2_2.cpp.o	a2787ad384b2ef19
+0	4	0	clean	3c8e6cc385ee00ba
+363	402	1647797947044612011	dataCpp	3e03ce55e50fed5b
+0	34	1647619542675669478	build.ninja	84a4cbc1cf8cf568
+2	43	1647619458102604479	CMakeFiles/dataCpp.dir/chapter2/LNode.cpp.o	2aabeefd93841498
+1	363	1647797947001939476	CMakeFiles/dataCpp.dir/main.cpp.o	2c8c00062e245ba0
+2	38	1647619481355319767	CMakeFiles/dataCpp.dir/chapter2/SqList.cpp.o	33f7f1200cade260
+1	33	1647619458092164828	CMakeFiles/dataCpp.dir/chapter2/SeqList.cpp.o	5e2b01c9c24e858d
+1	244	1647797962079565527	CMakeFiles/dataCpp.dir/main.cpp.o	2c8c00062e245ba0
+244	274	1647797962110850806	dataCpp	3e03ce55e50fed5b
