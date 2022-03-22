@@ -3,6 +3,5 @@
 
 int main() {
     testList2_2();
-    printf("123");
     return 0;
 }

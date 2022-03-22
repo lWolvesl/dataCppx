@@ -51,7 +51,7 @@ bool exercises4(SqList &L, int s, int t) {
     return true;
 }
 
-void exercises6(SqList &L) {
+void exercises5(SqList &L) {
     int temp = L.data[L.length - 1];
     int e;
     for (int i = L.length - 2; i >= 1; --i) {
@@ -63,7 +63,7 @@ void exercises6(SqList &L) {
     }
 }
 
-SqList exercises9(SqList &L1, SqList &L2) {
+SqList exercises7(SqList &L1, SqList &L2) {
     SqList L3;
     int length = L1.length + L2.length;
     L3.data = (int *) malloc(length * sizeof(int));
@@ -83,7 +83,7 @@ SqList exercises9(SqList &L1, SqList &L2) {
     return L3;
 }
 
-void exercises9(SqList &L, int m, int n) {
+void exercises8(SqList &L, int m, int n) {
     int *p = (int *) malloc(m * sizeof(int));
     for (int i = 0; i < m; ++i) {
         p[i] = L.data[m+i];
@@ -130,20 +130,20 @@ void testExercise6() {
     L.data[4] = 3;
     L.data[5] = 3;
     L.length = 6;
-    exercises6(L);
+    exercises5(L);
     PrintList(L);
 }
 
-void testExercise8() {
+void testExercise7() {
     SqList L1 = createListOne();
     SqList L2 = createListOne();
-    SqList L3 = exercises9(L1, L2);
+    SqList L3 = exercises7(L1, L2);
     PrintList(L3);
 }
 
-void testExercises9() {
+void testExercises8() {
     SqList L = createListOne();
-    exercises9(L, 4, 5);
+    exercises8(L, 4, 5);
     printf("\n");
     PrintList(L);
 }
@@ -154,6 +154,6 @@ void testList2_2() {
     //testExercises3();
     //testExercises4x5();
     //testExercise6();
-    //testExercise8();
-    testExercises9();
+    //testExercise7();
+    testExercises8();
 }
