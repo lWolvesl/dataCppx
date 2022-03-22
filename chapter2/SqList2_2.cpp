@@ -63,6 +63,30 @@ void exercises5(SqList &L) {
     }
 }
 
+/**
+ * 第六题
+ * @param L1
+ * @param L2
+ */
+void exercises6(SqList &L) {
+    if (L.length == 1) {
+        return;
+    }
+    int index = 0;
+    int compare = 1;
+    while (compare < L.length) {
+        if (L.data[index] != L.data[compare]) {
+            index = compare;
+            compare++;
+            continue;
+        }
+        for (int i = compare; i < L.length - 1; ++i) {
+            L.data[i] = L.data[i + 1];
+        }
+        L.length--;
+    }
+}
+
 SqList exercises7(SqList &L1, SqList &L2) {
     SqList L3;
     int length = L1.length + L2.length;
@@ -85,12 +109,29 @@ SqList exercises7(SqList &L1, SqList &L2) {
 
 void exercises8(SqList &L, int m, int n) {
     int *p = (int *) malloc(m * sizeof(int));
-    for (int i = 0; i < m; ++i) {
-        p[i] = L.data[m+i];
-        L.data[m+i];
+    for (int i = 0; i < n; ++i) {
+        p[i] = L.data[m + i];
     }
+    for (int i = m - 1, end = L.length - 1; i >= 0; --i, --end) {
+        L.data[end] = L.data[i];
+    }
+    for (int i = n - 1; i >= 0; --i) {
+        L.data[i] = p[i];
+    }
+}
+
+/**
+ * 第九题
+ * 有序，找x
+ */
+void exercises9(SqList &L, int x) {
+
 
 }
+
+
+
+
 
 /**
  * 测试单元
@@ -122,15 +163,16 @@ void testExercises4x5() {
 
 void testExercise6() {
     SqList L;
-    InitSqList(L, 6);
+    InitSqList(L, 7);
     L.data[0] = 1;
     L.data[1] = 1;
     L.data[2] = 2;
     L.data[3] = 3;
     L.data[4] = 3;
     L.data[5] = 3;
-    L.length = 6;
-    exercises5(L);
+    L.data[6] = 4;
+    L.length = 7;
+    exercises6(L);
     PrintList(L);
 }
 
@@ -143,7 +185,7 @@ void testExercise7() {
 
 void testExercises8() {
     SqList L = createListOne();
-    exercises8(L, 4, 5);
+    exercises8(L, 5, 4);
     printf("\n");
     PrintList(L);
 }
