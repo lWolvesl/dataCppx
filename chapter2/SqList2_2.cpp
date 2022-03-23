@@ -199,10 +199,10 @@ void exercises10(SqList &L, int q) {
 int exercises11(SqList &L1, SqList &L2) {
     int index = 0, l1 = 0, l2 = 0, temp;
     for (int i = 0; i < L1.length * 2; ++i) {
-        if (L1.data[l1]>=L2.data[l2]){
+        if (L1.data[l1] >= L2.data[l2]) {
             temp = L2.data[l2];
             l2++;
-        }else{
+        } else {
             temp = L1.data[l1];
             l1++;
         }
@@ -212,30 +212,126 @@ int exercises11(SqList &L1, SqList &L2) {
     }
 }
 
+int exercises12(SqList &L) {
+    int main = L.data[0];
+    int count = 1;
+    for (int i = 1; i < L.length; ++i) {
+        if (count == 0) {
+            main = L.data[i];
+            continue;
+        }
+        if (main != L.data[i]) {
+            count--;
+        }
+    }
+    if (count > 0) {
+        count = 0;
+        for (int i = 0; i < L.length; ++i) {
+            if (main == L.data[i]) {
+                count++;
+            }
+        }
+        if (count > L.length / 2) {
+            return main;
+        }
+    }
+    return -1;
+}
+
+
+/**
+ * 由题意可得给定数组中必有一个在(0,length]中缺少的正整数，因此必存在一个n<L.length为这个数组中缺少的最小正整数，因此只需要设置一个
+ * 等长数组arr，出现过的数n则在arr[n]中设置为1，不存在的默认为0，此时再从1号伪开始遍历数组，出现的第一个不为1的数就是所求最小正整数
+ * O(n) S(n)
+ * @param L
+ * @return
+ */
+int exercises13(SqList &L) {
+    int *p = (int *) malloc(sizeof(int) * L.length);
+    for (int i = 0; i < L.length; ++i) {
+        if (L.data[i] < L.length) {
+            p[L.data[i]] = 1;
+        }
+    }
+    for (int i = 1; i < L.length; ++i) {
+        if (p[i] == 0) {
+            return i;
+        }
+    }
+    return 0;
+}
+
+/**
+ * 1.时间复杂度O(n^3)，遍历3个数组直接计算求最小值 S(1)
+ * 2.
+ * @param L1
+ * @param L2
+ * @param L3
+ * @return
+ */
+
+int exercises14(SqList &L1, SqList &L2, SqList &L3) {
+    int i1 = 0, i2 = 0, i3 = 0;
+    int ret = INT32_MAX;
+    int temp2s;
+    int temp2c;
+    int temp3s;
+    int temp3c;
+    while (i1 < L1.length) {
+        int temp1 = INT32_MAX;
+        int temp2 = INT32_MAX;
+        if (i2 != L2.length - 1) {
+            temp2s = abs(L1.data[i1] - L2.data[i2]);
+            temp2c = abs(L1.data[i1] - L2.data[i2 + 1]);
+            if (temp2s > temp2c) {
+                i2++;
+                continue;
+            }
+        }
+        temp1 = min(min(temp2c, temp2s), temp1);
+        if (i3 != L3.length - 1) {
+            temp3s = abs(L1.data[i1] - L3.data[i3]) + abs(L2.data[i2] - L3.data[i3]);
+            temp3c = abs(L1.data[i1] - L3.data[i3 + 1]) + abs(L2.data[i2] - L3.data[i3 + 1]);
+            if (temp3s > temp3c) {
+                i3++;
+                continue;
+            }
+        }
+        temp2 = min(min(temp3c, temp3s), temp2);
+        if (ret > temp1 + temp2){
+            printf("%d %d %d %d %d\n",i1,i2,i3,temp1,temp2);
+            ret = temp1 + temp2;
+        }
+        i1++;
+    }
+    return ret;
+}
+
+
 /**
  * 测试单元
  */
 void testExercises1() {
-    SqList L = createListOne();
+    SqList L = createListOne(0);
     exercises1(L);
     PrintList(L);
 }
 
 void testExercises2() {
-    SqList L = createListOne();
+    SqList L = createListOne(0);
     ListAppend(L, 3);
     exercises2(L);
     PrintList(L);
 }
 
 void testExercises3() {
-    SqList L = createListOne();
+    SqList L = createListOne(0);
     exercises3(L, 2);
     PrintList(L);
 }
 
 void testExercises4x5() {
-    SqList L = createListOne();
+    SqList L = createListOne(0);
     printf("%d", exercises4(L, 4, 5));
     PrintList(L);
 }
@@ -256,14 +352,14 @@ void testExercise6() {
 }
 
 void testExercise7() {
-    SqList L1 = createListOne();
-    SqList L2 = createListOne();
+    SqList L1 = createListOne(0);
+    SqList L2 = createListOne(0);
     SqList L3 = exercises7(L1, L2);
     PrintList(L3);
 }
 
 void testExercises8() {
-    SqList L = createListOne();
+    SqList L = createListOne(0);
     exercises8(L, 5, 4);
     printf("\n");
     PrintList(L);
@@ -287,13 +383,13 @@ void testExercises9() {
 }
 
 void testExercises10() {
-    SqList L = createListOne();
+    SqList L = createListOne(0);
     exercises10(L, 4);
     printf("\n");
     PrintList(L);
 }
 
-void testExercises11(){
+void testExercises11() {
     SqList L1;
     InitSqList(L1, 7);
     L1.data[0] = 1;
@@ -316,7 +412,21 @@ void testExercises11(){
     L2.length = 7;
     PrintList(L1);
     PrintList(L2);
-    printf("%d\n",exercises11(L1,L2));
+    printf("%d\n", exercises11(L1, L2));
+}
+
+void testExercises13() {
+    SqList L = createListOne(0);
+    int x = exercises13(L);
+    printf("%d\n", x);
+}
+
+void testExercises14() {
+    SqList L1 = createCeleListOne(1);
+    SqList L2 = createCeleListOne(10);
+    SqList L3 = createCeleListOne(22);
+    int x = exercises14(L1, L2, L3);
+    printf("%d", x);
 }
 
 void testList2_2() {
@@ -329,5 +439,7 @@ void testList2_2() {
     //testExercises8();
     //testExercises9();
     //testExercises10();
-    testExercises11();
+    //testExercises11();
+    //testExercises13();
+    testExercises14();
 }

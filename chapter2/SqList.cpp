@@ -115,13 +115,29 @@ void DestroyList(SqList &L) {
     L.length = 0;
 }
 
-SqList createListOne() {
+SqList createListOne(int x) {
     SqList L;
     InitSqList(L);
-    srand(time(NULL));
+    srand(time(NULL) + x);
     for (int i = 0; i < 9; ++i) {
         int rands = rand() % 10;
-        ListAppend(L,rands);
+        ListAppend(L, rands);
+    }
+    PrintList(L);
+    return L;
+}
+
+SqList createCeleListOne(int x) {
+    SqList L;
+    InitSqList(L);
+    srand(time(NULL) + x);
+    int i = 0;
+    while (i < 9) {
+        int rands = rand() % 100;
+        if (rands >= i * 10 && rands < (i + 1) * 10) {
+            ListAppend(L, rands);
+            i++;
+        }
     }
     PrintList(L);
     return L;
