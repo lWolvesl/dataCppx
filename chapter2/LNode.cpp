@@ -4,27 +4,124 @@
 
 #include <cstdio>
 #include <cstdlib>
+#include <ctime>
 
 typedef struct LNode {
     int data;
     struct LNode *next;
-} LNode, *ListNode;
+} LNode, *LinkNode;
 
-bool initLinkList(ListNode &L) {
+
+bool initLinkList(LinkNode &L) {
     L = NULL;
     return true;
 }
 
-bool Empty(ListNode &L) {
+bool Empty(LinkNode &L) {
     return L == NULL;
 }
 
-bool initLinkedList(ListNode &L) {
+void PrintNode(LNode *node) {
+    printf("node{data:%d ,next:%d} ", node->data, node->next->data);
+}
+
+void PrintLinkList(LinkNode &L) {
+    LinkNode node = L;
+    while (node->next != NULL) {
+        PrintNode(node);
+        node = node->next;
+    }
+    printf("\n");
+}
+
+bool initLinkedList(LinkNode &L) {
     L = (LNode *) malloc(sizeof(LNode));
     if (L == NULL) {
         return false;
     }
     L->next = NULL;
     return true;
+}
+
+void LinkedListHeadInsert(LinkNode &L, LNode *Node) {
+    Node->next = L->next;
+    L->next = Node;
+}
+
+void ListHeadInsert(LinkNode &L, LNode *Node) {
+    Node->next = L;
+    L = Node;
+}
+
+void ListTailInsert(LinkNode &L, LNode *Node) {
+    LinkNode head = L;
+    while (head->next != NULL) {
+        head = head->next;
+    }
+    head->next = Node;
+    Node->next = NULL;
+}
+
+LNode *GetElemByValue(LinkNode &L, int x) {
+    LinkNode node = L;
+    while (node->data != x) {
+        node = node->next;
+    }
+    return node;
+}
+
+LNode *GetElemByIndex(LinkNode &L, int i) {
+    LinkNode node = L;
+    if (i < 1) {
+        return NULL;
+    }
+    while (node && i != 1) {
+        node = node->next;
+        --i;
+    }
+    return node;
+}
+
+bool LinkedListInsert(LinkNode &L, int i, LNode *node) {
+    LNode *p = GetElemByIndex(L, i - 1);
+    if (!p) {
+        return false;
+    }
+    node->next = p->next;
+    p->next = node;
+    return true;
+}
+
+LNode *ListDeleteByIndex(LinkNode &L, int i) {
+    LNode *p = GetElemByIndex(L, i);
+    GetElemByIndex(L, i - 1)->next = p->next;
+    return p;
+}
+
+int ListGetLength(LinkNode &L) {
+    int length = -1;
+    LinkNode node = L;
+    while (node != NULL) {
+        length++;
+        node = node->next;
+    }
+    return length;
+}
+
+LinkNode createLinkedList() {
+    LinkNode L;
+    initLinkedList(L);
+    LinkNode node = L;
+    for (int i = 0; i < 10; ++i) {
+        srand(time(NULL) + i);
+        int rands = rand() % 20;
+        LNode *p = (LNode *) malloc(sizeof(LNode *));
+        p->next = NULL;
+        p->data = rands;
+        node->next = p;
+        node = node->next;
+    }
+    PrintLinkList(L);
+    return L;
 }
 
