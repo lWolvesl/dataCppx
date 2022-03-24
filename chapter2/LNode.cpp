@@ -7,6 +7,7 @@
 #include <ctime>
 
 typedef struct LNode {
+    bool head = false;
     int data;
     struct LNode *next;
 } LNode, *LinkNode;
@@ -27,6 +28,9 @@ void PrintNode(LNode *node) {
 
 void PrintLinkList(LinkNode &L) {
     LinkNode node = L;
+    if (L->head) {
+        node = node->next;
+    }
     while (node->next != NULL) {
         PrintNode(node);
         node = node->next;
@@ -39,6 +43,7 @@ bool initLinkedList(LinkNode &L) {
     if (L == NULL) {
         return false;
     }
+    L->head = true;
     L->next = NULL;
     return true;
 }
