@@ -119,7 +119,29 @@ LinkNode createLinkedList() {
     LinkNode node = L;
     for (int i = 0; i < 10; ++i) {
         srand(time(NULL) + i);
-        int rands = rand() % 20;
+        int rands = rand() % 10;
+        LNode *p = (LNode *) malloc(sizeof(LNode *));
+        p->next = NULL;
+        p->data = rands;
+        node->next = p;
+        node = node->next;
+    }
+    PrintLinkList(L);
+    return L;
+}
+
+LinkNode createLinkList() {
+    LinkNode L;
+    initLinkList(L);
+    LNode *node;
+    node = (LNode *) malloc(sizeof(LNode));
+    node->head = false;
+    srand(time(NULL) - 1);
+    node->data = rand() % 10;
+    L = node;
+    for (int i = 0; i < 9; ++i) {
+        srand(time(NULL) + i);
+        int rands = rand() % 10;
         LNode *p = (LNode *) malloc(sizeof(LNode *));
         p->next = NULL;
         p->data = rands;

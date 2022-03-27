@@ -1,4 +1,4 @@
-#include "chapter2/Node.cpp"
+#include "chapter2/LNode2_3.cpp"
 
 int main() {
     test();
