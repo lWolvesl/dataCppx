@@ -6,7 +6,7 @@
 #include <cstdio>
 #include <ctime>
 
-#define iniSize 10;
+#define iniSize 10
 
 typedef struct {
     int *data;

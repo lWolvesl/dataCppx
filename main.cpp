@@ -1,6 +1,6 @@
-#include "chapter2/LNode.cpp"
+#include "chapter2/Node.cpp"
 
 int main() {
-    LinkNode L = createLinkedList();
+    test();
     return 0;
 }
