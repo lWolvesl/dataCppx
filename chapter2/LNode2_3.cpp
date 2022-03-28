@@ -318,10 +318,10 @@ void test() {
     //LinkNode L1 = createLinkList();
     LinkNode L2 = createLinkedList();
     LinkNode L3 = L2;
-    LinkNode A = (LNode *) malloc(sizeof(LNode));
-    A->head = true;
-    LinkNode B = (LNode *) malloc(sizeof(LNode));
-    B->head = true;
+    //LinkNode A = (LNode *) malloc(sizeof(LNode));
+    //A->head = true;
+    //LinkNode B = (LNode *) malloc(sizeof(LNode));
+    //B->head = true;
 
     //exercises1(L1, 2);
     //exercises2(L2, 2);
@@ -339,6 +339,6 @@ void test() {
     printf("\n");
     //PrintLinkList(L1);
     PrintLinkList(L3);
-    PrintLinkList(A);
-    PrintLinkList(B);
+    //PrintLinkList(A);
+    //PrintLinkList(B);
 }
