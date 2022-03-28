@@ -31,6 +31,9 @@ void PrintLinkList(LinkNode &L) {
     if (L->head) {
         node = node->next;
     }
+    if (node==NULL){
+        return;
+    }
     while (node->next != NULL) {
         PrintNode(node);
         node = node->next;
@@ -103,9 +106,12 @@ LNode *ListDeleteByIndex(LinkNode &L, int i) {
     return p;
 }
 
-int ListGetLength(LinkNode &L) {
+int GetListLength(LinkNode &L) {
     int length = -1;
     LinkNode node = L;
+    if (L->head){
+        node = node->next;
+    }
     while (node != NULL) {
         length++;
         node = node->next;
@@ -119,7 +125,7 @@ LinkNode createLinkedList() {
     LinkNode node = L;
     for (int i = 0; i < 10; ++i) {
         srand(time(NULL) + i);
-        int rands = rand() % 10;
+        int rands = rand() % 5;
         LNode *p = (LNode *) malloc(sizeof(LNode *));
         p->next = NULL;
         p->data = rands;
@@ -151,4 +157,3 @@ LinkNode createLinkList() {
     PrintLinkList(L);
     return L;
 }
-
