@@ -309,10 +309,27 @@ void exercises23(LinkNode &L) {
             arr[temp] = 1;
         } else {
             head->next = head->next->next;
+            if (head->next == NULL) {
+                break;
+            }
         }
         head = head->next;
     }
 }
+
+/**
+ * 24
+ * 两个判断位
+ * 一个每次走一位，一个每次走两位
+ * 若有环必重合，直接返回重合位置
+ * 若无环必走到NULL
+ */
+
+/**
+ * 🌟
+ * 25
+ * 找到中间节点，逆置后半节点，依次插入
+ */
 
 void test() {
     //LinkNode L1 = createLinkList();
