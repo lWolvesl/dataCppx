@@ -54,5 +54,10 @@ void test() {
     printf("%d \n", push(Q, 3));
     printf("%d \n", push(Q, 3));
     printf("%d \n", isEmpty(Q));
+    printf("%d \n", pop(Q));
+    printf("%d \n", pop(Q));
+    printf("%d \n", pop(Q));
+    printf("%d \n", pop(Q));
+    printf("%d \n", isEmpty(Q));
 }
 
