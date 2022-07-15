@@ -51,6 +51,13 @@ void StrCopy(HString *s,HString *h){
     s->length = h->length;
 }
 
-void StrEmpty(HString *s){
+bool StrEmpty(HString *s){
+    if(s->ch == NULL){
+        return true;
+    }
+    return false;
+}
 
+int StrCompare(HString *s,HString *h){
+    return s->length - h->length;
 }
