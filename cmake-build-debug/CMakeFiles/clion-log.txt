@@ -1,4 +1,4 @@
-/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/Applications/CLion.app/Contents/bin/ninja/mac/ninja -G Ninja /Users/li/Downloads/project/dataCpp
+"/Users/li/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/221.5921.27/CLion.app/Contents/bin/cmake/mac/bin/cmake" -DCMAKE_BUILD_TYPE=Debug "-DCMAKE_MAKE_PROGRAM=/Users/li/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/221.5921.27/CLion.app/Contents/bin/ninja/mac/ninja" -G Ninja -S /Users/li/Downloads/project/dataCppx -B /Users/li/Downloads/project/dataCppx/cmake-build-debug
 -- Configuring done
 -- Generating done
--- Build files have been written to: /Users/li/Downloads/project/dataCpp/cmake-build-debug
+-- Build files have been written to: /Users/li/Downloads/project/dataCppx/cmake-build-debug

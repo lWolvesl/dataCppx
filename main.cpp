@@ -1,4 +1,4 @@
-#include "chapter3/SqQueue.cpp"
+#include "chapter4/KMP.cpp"
 
 int main() {
     test();
