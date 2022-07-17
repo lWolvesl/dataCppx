@@ -3,4 +3,4 @@ project(dataCpp)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(dataCpp main.cpp chapter4/HString.cpp)
+add_executable(dataCpp main.cpp)

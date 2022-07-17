@@ -17,9 +17,9 @@ void InitHString(HString *s) {
     s->length = 0;
 }
 
-void PrintString(HString *s) {
-    for (int i = 0; i < s->length; ++i) {
-        printf("%c", s->ch[i]);
+void PrintString(HString s) {
+    for (int i = 0; i < s.length; ++i) {
+        printf("%c", s.ch[i]);
     }
     printf("\n");
 }
@@ -43,7 +43,6 @@ void StrCopy(HString *s, HString *h) {
     }
     s->ch = (char *) malloc(sizeof(char) * h->length);
     assert(s->ch != NULL);
-    assert(s->ch != NULL);
     for (int i = 0; i < h->length; ++i) {
         s->ch[i] = h->ch[i];
     }
@@ -57,8 +56,8 @@ bool StrEmpty(HString *s) {
     return false;
 }
 
-int StrCompare(HString *s, HString *h) {
-    return s->length - h->length;
+int StrCompare(HString s, HString h) {
+    return s.length - h.length;
 }
 
 int StrString(HString *s) {
@@ -89,18 +88,43 @@ void Concat(HString *S, HString *s1, HString *s2) {
     }
 }
 
-//简单模式匹配算法
-int Index(){
-    return 0;
+//朴素(简单)模式匹配算法
+int Index(HString S, HString T) {
+    if (StrCompare(S, T) < 0) {
+        return -1;
+    }
+    for (int i = 0, j = 0; i < S.length;) {
+        if (S.ch[i + j] == T.ch[j]) {
+            j++;
+            if (j == T.length) {
+                return i;
+            }
+        } else {
+            if (i + j >= S.length) {
+                break;
+            }
+            j = 0;
+            i++;
+        }
+    }
+    return -1;
 }
 
-void ClearString(HString *s){
+void ClearString(HString *s) {
     if (s->ch != NULL) {
         free(s->ch);
     }
     s->length = 0;
 }
 
-void DestroyString(HString *s){
+void DestroyString(HString *s) {
     free(s);
+}
+
+//快速创建字符串
+HString createStr(char *T) {
+    HString S;
+    InitHString(&S);
+    StrAssign(&S, T);
+    return S;
 }
