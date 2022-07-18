@@ -5,6 +5,8 @@
 #include "string.h"
 #include "stdlib.h"
 #include "assert.h"
+#include "time.h"
+#include "../tools.cpp"
 
 //串结构
 typedef struct {
@@ -149,12 +151,40 @@ int *get_next(HString T) {
     return next;
 }
 
-void test() {
-    HString T = createStr("ababaaababaa");
-    //HString T = createStr("abaabcac");
+int Index_KMP(HString S, HString T) {
     int *next = get_next(T);
-    for (int i = 0; i < T.length; ++i) {
-        printf("%d ", next[i]);
+    int i = 0, j = 0;
+    while (i + T.length < S.length) {
+        if (S.ch[i + j] == T.ch[j]) {
+            j++;
+            if (j == T.length) {
+                return i;
+            }
+        } else {
+            i = i + j - next[j];
+            j = next[j];
+            if (j == -1) {
+                j++;
+            }
+        }
     }
     free(next);
+    return -1;
+}
+
+void testKMP(){
+    HString S = createStr("ababcbfaosfaijfpicnzoinflfknietnldaiopjpaciancimzcaocacmzicabababcacbab");
+    HString T = createStr("abcac");
+
+    int index = Index_KMP(S, T);
+    printf("%d\n", index);
+}
+
+void test() {
+    starts();
+    testKMP();
+    //HString T = createStr("ababaaababaa");
+    //HString T = createStr("abaabcac");
+    //HString T = createStr("google");
+
 }
