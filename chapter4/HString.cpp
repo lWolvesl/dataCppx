@@ -83,8 +83,11 @@ void Concat(HString *S, HString *s1, HString *s2) {
     }
     S->ch = (char *) malloc(sizeof(char) * S->length);
     assert(S->ch != NULL);
+    for (int i = 0; i < s1->length; ++i) {
+        S->ch[i] = s1->ch[i];
+    }
     for (int i = 0; i < s2->length; ++i) {
-        S->ch[i] = s2->ch[s1->length + i];
+        S->ch[s1->length + i] = s2->ch[i];
     }
 }
 
@@ -127,4 +130,31 @@ HString createStr(char *T) {
     InitHString(&S);
     StrAssign(&S, T);
     return S;
+}
+
+//KMP 计算next数组
+int *get_next(HString T) {
+    int *next = (int *) malloc(sizeof(int) * (T.length));
+    int i = 0, j = -1;
+    next[0] = -1;
+    while (i < T.length) {
+        if (j == -1 || T.ch[i] == T.ch[j]) {
+            ++i;
+            ++j;
+            next[i] = j;
+        } else {
+            j = next[j];
+        }
+    }
+    return next;
+}
+
+void test() {
+    HString T = createStr("ababaaababaa");
+    //HString T = createStr("abaabcac");
+    int *next = get_next(T);
+    for (int i = 0; i < T.length; ++i) {
+        printf("%d ", next[i]);
+    }
+    free(next);
 }

@@ -1,4 +1,4 @@
-#include "chapter4/KMP.cpp"
+#include "chapter4/HString.cpp"
 
 int main() {
     test();
