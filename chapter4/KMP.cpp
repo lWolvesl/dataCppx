@@ -23,7 +23,7 @@ void test() {
     HString T = createStr("ababaaababaa");
     int *next = get_next(T);
     for (int i = 0; i < T.length + 1; ++i) {
-        printf("%d ",next[i]);
+        printf("%d ", next[i]);
     }
     free(next);
 }
