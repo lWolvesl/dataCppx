@@ -1,6 +1,6 @@
-#include "chapter4/HString.cpp"
+#include "mihuyou/mihuyou.c"
 
 int main() {
-    test();
+    run();
     return 0;
 }
