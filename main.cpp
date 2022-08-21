@@ -4,10 +4,13 @@
 void test() {
     char *s = "12345";
     int i = 1;
-    tools_log(i);
+    tLog(i);
 }
 
 int main() {
-    test();
+    char *g = getTime();
+    printf("%s",g);
+    printf(getTime());
+    printf("\n");
     return 0;
 }
