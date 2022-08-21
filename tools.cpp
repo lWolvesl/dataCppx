@@ -4,6 +4,7 @@
 #include "stdio.h"
 #include "time.h"
 #include "stdlib.h"
+#include "string.h"
 
 //十进制int转char*/string
 char *tIntToString(int num)//10进制
@@ -54,7 +55,7 @@ void tEnter() {
     printf("\n");
 }
 
-char *getTime() {
+char *tGetTimeStr() {
     //获取标准时间
     char *times = (char *) malloc(sizeof(char) * 20);
     time_t timeX;
@@ -103,20 +104,21 @@ char *getTime() {
 }
 
 //打印时间戳
-void *tGetTime() {
-    char *times = getTime();
+void *tPrintTime() {
+    char *times = tGetTimeStr();
+    strcat(times," ");
     printf(times);
 }
 
 
 //输出一段语句表示程序编译完成以下开始执行
 void tStart() {
-    tGetTime();
+    tPrintTime();
     printf("Compile complete!\n");
 }
 
 void tEnd() {
-    tGetTime();
+    tPrintTime();
     printf("Done!\n");
 }
 
@@ -145,21 +147,18 @@ void tPrintln(bool text) {
 }
 
 void tLog(char *text) {
-    tGetTime();
-    tPrint(text);
-    printf("\n");
+    tPrintTime();
+    tPrintln(text);
 }
 
 void tLog(int text) {
-    tGetTime();
-    tPrint(text);
-    printf("\n");
+    tPrintTime();
+    tPrintln(text);
 }
 
 void tLog(bool text) {
-    tGetTime();
-    tPrint(text);
-    printf("\n");
+    tPrintTime();
+    tPrintln(text);
 }
 
 //int判断大小
@@ -170,4 +169,13 @@ int tMaxInt(int a, int b) {
 //int判断小
 int tMinInt(int a, int b) {
     return a < b ? a : b;
+}
+
+//输出true/false
+void tBool(bool tag){
+    if (tag){
+        tPrintln("true");
+    }else{
+        tPrintln("false");
+    }
 }

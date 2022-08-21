@@ -2,7 +2,7 @@
 // Created by wolves on 2022/8/7.
 //
 
-#include <stdio.h>
+#include "stdio.h"
 
 typedef struct Queue{
     char data;
