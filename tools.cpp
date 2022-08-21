@@ -5,8 +5,9 @@
 #include "time.h"
 #include "stdlib.h"
 #include "string.h"
+#include "stdbool.h"
 
-//十进制int转char*/string
+// 十进制int转char* & string
 char *tIntToString(int num)//10进制
 {
     //获取长度
@@ -66,6 +67,7 @@ char *tGetTimeStr() {
     strcat(times, tIntToString(p->tm_year + 1900));
     strcat(times, "/");
 
+    //拼接字符串
     int mouth = (p->tm_mon + 1) % 12;
     if (mouth < 10) {
         strcat(times, "0");
@@ -80,7 +82,7 @@ char *tGetTimeStr() {
     strcat(times, tIntToString(day));
     strcat(times, " ");
 
-    int hour = (p->tm_mon + 8) % 24;
+    int hour = (p->tm_hour + 8) % 24;
     if (hour < 10) {
         strcat(times, "0");
     }
@@ -104,33 +106,17 @@ char *tGetTimeStr() {
 }
 
 //打印时间戳
-void *tPrintTime() {
+void tPrintTime() {
     char *times = tGetTimeStr();
-    strcat(times," ");
-    printf(times);
+    strcat(times, " ");
+    printf("%s", times);
 }
 
-
-//输出一段语句表示程序编译完成以下开始执行
-void tStart() {
-    tPrintTime();
-    printf("Compile complete!\n");
-}
-
-void tEnd() {
-    tPrintTime();
-    printf("Done!\n");
-}
-
-void tPprint(char *text) {
+void tPrint(char *text) {
     printf("%s", text);
 }
 
 void tPrint(int text) {
-    printf("%d", text);
-}
-
-void tPrint(bool text) {
     printf("%d", text);
 }
 
@@ -148,34 +134,40 @@ void tPrintln(bool text) {
 
 void tLog(char *text) {
     tPrintTime();
+    printf("\033[34minfo \033[0m");
     tPrintln(text);
 }
 
 void tLog(int text) {
     tPrintTime();
+    printf("\033[34minfo \033[0m");
     tPrintln(text);
 }
 
-void tLog(bool text) {
-    tPrintTime();
-    tPrintln(text);
+// 输出一段语句表示程序编译完成以下开始执行
+void tStart() {
+    tLog("Compile complete!");
 }
 
-//int判断大小
+void tEnd() {
+    tLog("done!");
+}
+
+// int判断大小
 int tMaxInt(int a, int b) {
     return a > b ? a : b;
 }
 
-//int判断小
+// int判断小
 int tMinInt(int a, int b) {
     return a < b ? a : b;
 }
 
-//输出true/false
-void tBool(bool tag){
-    if (tag){
+// 输出true&false
+void tBool(bool tag) {
+    if (tag) {
         tPrintln("true");
-    }else{
+    } else {
         tPrintln("false");
     }
 }
