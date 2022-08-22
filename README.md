@@ -1,6 +1,6 @@
 # DataCpp
 
-数据结构 C/C++实现
+数据结构 C/C++实现,更新至第五章
 
 ## 克隆项目(以下均可)
 - ```git clone https://gitee.com/lWolvesl/datacppx.git```
