@@ -11,7 +11,7 @@
 typedef struct TreeNode {
     int data;
     struct TreeNode *LNode, *RNode;
-} BiTNode;
+} *BitTree;
 
 /**
  * 打印节点值
@@ -23,13 +23,14 @@ void visitNode(TreeNode &node) {
 
 /**
  * 打印遍历队列
+ * @重载方法
  * @param node
  */
-void visitQueue(tQueue<TreeNode> queue) {
+void visitQueue(tQueue<BitTree> queue) {
     tPrintTimeInfo();
-    tDNode<TreeNode> *node = queue.head;
-    while (node != NULL) {
-        tPrint(node->value.data);
+    tDNode<BitTree> *node = queue.head;
+    while (node != nullptr) {
+        tPrint(node->value->data);
         tPrint(" ");
         node = node->next;
     }
@@ -41,8 +42,8 @@ void visitQueue(tQueue<TreeNode> queue) {
  * @重载方法
  * @return
  */
-TreeNode *CreateNode() {
-    TreeNode *root = (TreeNode *) malloc(sizeof(TreeNode));
+BitTree CreateNode() {
+    BitTree root = (BitTree) malloc(sizeof(BitTree));
     root->LNode = NULL;
     root->RNode = NULL;
     root->data = -1;
@@ -55,10 +56,9 @@ TreeNode *CreateNode() {
  * @param data
  * @return
  */
-TreeNode *CreateNode(int data) {
+BitTree CreateNode(int data) {
     TreeNode *root = (TreeNode *) malloc(sizeof(TreeNode));
-    root->LNode = NULL;
-    root->RNode = NULL;
+    root->LNode = root->RNode = NULL;
     root->data = data;
     return root;
 }
@@ -71,49 +71,39 @@ TreeNode *CreateNode(int data) {
  * @param rNode
  * @return
  */
-TreeNode *CreateNode(int data, TreeNode &lNode, TreeNode &rNode) {
-    TreeNode *root = (TreeNode *) malloc(sizeof(TreeNode));
+BitTree CreateNode(int data, TreeNode &lNode, TreeNode &rNode) {
+    BitTree root = (BitTree) malloc(sizeof(BitTree));
     root->LNode = &lNode;
     root->RNode = &rNode;
     root->data = data;
     return root;
 }
 
-TreeNode *CreateTree(int maxNode) {
+BitTree CreateTree(int maxNode) {
     tLog("创建树");
-    TreeNode *root = CreateNode(tRandom100());
-    --maxNode;
-    TreeNode *temp = root;
-    tPrintTime();
-    tPrintInfo();
-    tPrint("根节点 ");
-    tPrintln(temp->data);
-    for (int i = 0; i < maxNode;) {
-        if (tRandom10() % 2) {
-            if (temp->LNode && tRandom10() % 2) {
-                temp = temp->LNode;
+    BitTree root = CreateNode(tRandom100());
+    BitTree node = root;
+    tLog(tStrCat(2, "根节点 ", tIntToString(node->data)));
+    for (int i = 1; i < maxNode;) {
+        if (tRandom100() % 2) {
+            if (!node->LNode) {
+                node->LNode = CreateNode(tRandom100());
+                i++;
+                tLog(tStrCat(2, "左节点 ", tIntToString(node->LNode->data)));
+            }
+            if (tRandom100() % 2) {
+                node = node->LNode;
                 tLog("转向左子树");
             }
-            if (!temp->LNode) {
-                temp->LNode = CreateNode(tRandom100());
-                ++i;
-                tPrintTime();
-                tPrintInfo();
-                tPrint("左孩子 ");
-                tPrintln(temp->LNode->data);
-            }
         } else {
-            if (temp->RNode && tRandom10() % 2) {
-                temp = temp->RNode;
-                tLog("转向右子树");
+            if (!node->RNode) {
+                node->RNode = CreateNode(tRandom100());
+                i++;
+                tLog(tStrCat(2, "右节点 ", tIntToString(node->RNode->data)));
             }
-            if (!temp->RNode) {
-                temp->RNode = CreateNode(tRandom100());
-                ++i;
-                tPrintTime();
-                tPrintInfo();
-                tPrint("右孩子 ");
-                tPrintln(temp->RNode->data);
+            if (tRandom100() % 2) {
+                node = node->RNode;
+                tLog("转向右子树");
             }
         }
     }
@@ -126,20 +116,71 @@ TreeNode *CreateTree(int maxNode) {
  * @param root
  * @return
  */
-tQueue<TreeNode> LevelOrder(TreeNode &root) {
-    tQueue<TreeNode> queue = tCreateQueue<TreeNode>();
-    tQueue<TreeNode> ret = tCreateQueue<TreeNode>();
+tQueue<BitTree> LevelOrder(BitTree root) {
+    tQueue<BitTree> queue = tCreateQueue<BitTree>();
+    tQueue<BitTree> ret = tCreateQueue<BitTree>();
     tPush(queue, root);
-    TreeNode node;
+    BitTree node;
     while (!tEmpty(queue)) {
         node = tPop(queue);
         tPush(ret, node);
-        if (node.LNode != NULL) {
-            tPush(queue, *node.LNode);
+        tLog(node->data);
+        if (node->LNode != NULL) {
+            tPush(queue, node->LNode);
         }
-        if (node.RNode != NULL) {
-            tPush(queue, *node.RNode);
+        if (node->RNode != NULL) {
+            tPush(queue, node->RNode);
         }
     }
+    tLog("完成层序遍历");
     return ret;
+}
+
+/**
+ * 递归式先序遍历
+ * 辅助函数
+ * @param node
+ * @return
+ */
+void PreOrder_rf(BitTree node, tQueue<BitTree> &queue) {
+    if (node != NULL) {
+        tPush(queue, node);
+        PreOrder_rf(node->LNode, queue);
+        PreOrder_rf(node->RNode, queue);
+    }
+}
+
+/**
+ * 递归式先序遍历
+ * 主函数
+ * @param node
+ * @return
+ */
+tQueue<BitTree> PreOrder_r(BitTree node) {
+    tQueue<BitTree> queue = tCreateQueue<BitTree>();
+    if (node != NULL) {
+        PreOrder_rf(node, queue);
+    }
+    return queue;
+}
+
+/**
+ * 非递归式先序遍历
+ * @param node
+ * @return
+ */
+tQueue<BitTree> PreOrder(BitTree root) {
+    tQueue<BitTree> queue = tCreateQueue<BitTree>();
+    tStack<BitTree> stack = tCreateStack<BitTree>();
+    tPush(stack, root);
+    if (!tEmpty(stack)) {
+        auto node = tPop(stack);
+        if (node->RNode) {
+            tPush(stack, node->RNode);
+        }
+        if (node->LNode) {
+            tPush(stack, node->LNode);
+        }
+    }
+    return queue;
 }

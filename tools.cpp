@@ -14,6 +14,8 @@
  * 随机生成数字的种子更改值
  */
 int Rand_times = 0;
+int Rand_index = -1;
+int rands[40];
 
 // 十进制int转char* & string
 char *tIntToString(int num)//10进制
@@ -246,38 +248,44 @@ void tBool(bool tag) {
 }
 
 /**
+ * @details 由于C/C++的随机数是伪随机，并且运行时在cpu时钟周期改变时rand会重制,因此创建一个长度为40的随机数数组，在调用开始时就确定随机数，保证每次随机生成值尽可能不同
+ * @arg 变量Rand_times为全局变量调用次数，确保每次调用结果均不同
+ * @author li
+ * @return
+ */
+int getRands(){
+    if (Rand_index == -1||Rand_index == 40){
+        srand((unsigned) time(NULL) + Rand_times);
+        Rand_times += 1;
+        rands[Rand_index] = rand();
+    }
+    return rands[Rand_index];
+}
+
+/**
  * 生成一个10以内随机的int值
- * 变量Rand_times为全局变量调用次数，确保每次调用结果均不同
  * @return 随机数
  */
 int tRandom10() {
-    srand((unsigned) time(NULL) + Rand_times);
-    Rand_times += 5;
-    return rand() % 10;
+    return getRands() % 10;
 }
 
 /**
  * 生成一个100以内随机的int值
- * 变量Rand_times为全局变量调用次数，确保每次调用结果均不同
  * @return 随机数
  */
 int tRandom100() {
-    srand((unsigned) time(NULL) + Rand_times);
-    Rand_times += 5;
-    return rand() % 100;
+    return getRands() % 100;
 }
 
 /**
  * 生成一个自定义[x,y]范围以内随机的int值
- * 变量Rand_times为全局变量调用次数，确保每次调用结果均不同
  * @param start 起始值
  * @param end 终止值
  * @return 随机数
  */
 int tRandom(int start, int end) {
-    srand((unsigned) time(NULL) + Rand_times);
-    Rand_times += 5;
-    return rand() % (end - start + 1) + start;
+    return getRands() % (end - start + 1) + start;
 }
 
 /**

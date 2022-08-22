@@ -6,7 +6,9 @@
  * 请将运行时代码填入此方法
  */
 void runCode() {
-    visitQueue(LevelOrder(*CreateTree(8)));
+    auto tree = CreateTree(10);
+    auto queue = PreOrder_r(tree);
+    visitQueue(queue);
 }
 
 int main() {
