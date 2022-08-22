@@ -129,10 +129,16 @@ void tPrint(const char *text) {
     printf("%s", text);
 }
 
+/**
+ * 打印info
+ */
 void tPrintInfo() {
     printf("\033[34minfo \033[0m");
 }
 
+/**
+ * 打印时间戳和info
+ */
 void tPrintTimeInfo() {
     tPrintTime();
     tPrintInfo();
