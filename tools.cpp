@@ -3,6 +3,7 @@
 //
 #pragma once //确保只会引用一次
 
+#include "stdarg.h"
 #include "stdio.h"
 #include "time.h"
 #include "stdlib.h"
@@ -13,58 +14,6 @@
  * 随机生成数字的种子更改值
  */
 int Rand_times = 0;
-
-/**
- * 单向链表节点
- * 节点值为int
- */
-struct tNodeI {
-    int value;
-    struct tNodeI *next;
-};
-
-/**
- * 双向链表节点
- * 节点值为int
- */
-struct tDNodeI {
-    int value;
-    tDNodeI *next;
-    tDNodeI *prior;
-};
-
-/**
- * 链表实现的栈
- * 结构体中的node相当于单向链表头指针
- * 节点值为int
- * size 为当前栈有多少个元素
- */
-struct tStackI {
-    int size;
-    struct tNodeI *node;
-};
-
-/**
- * 双向链表实现的队列
- * 仅允许尾进头出
- * 节点值为int
- * size 为当前队列中有多少元素
- */
-struct tQueueI {
-    int size;
-    struct tDNodeI *head, *tail;
-};
-
-/**
- * 双向链表实现的队列
- * 仅允许尾进头出
- * 节点值为int
- * size 为当前队列中有多少元素
- */
-struct tDequeI {
-    int size;
-    struct tDNodeI *head, *tail;
-};
 
 // 十进制int转char* & string
 char *tIntToString(int num)//10进制
@@ -176,8 +125,17 @@ void tPrintTime() {
  * @重载方法
  * @param text
  */
-void tPrint(char *text) {
+void tPrint(const char *text) {
     printf("%s", text);
+}
+
+void tPrintInfo() {
+    printf("\033[34minfo \033[0m");
+}
+
+void tPrintTimeInfo() {
+    tPrintTime();
+    tPrintInfo();
 }
 
 /**
@@ -194,7 +152,7 @@ void tPrint(int text) {
  * @重载方法
  * @param text
  */
-void tPrintln(char *text) {
+void tPrintln(const char *text) {
     printf("%s\n", text);
 }
 
@@ -208,12 +166,21 @@ void tPrintln(int text) {
 }
 
 /**
+ * 快速换行打印 int 值
+ * @重载方法
+ * @param text
+ */
+void tPrintln(char text) {
+    printf("%c\n", text);
+}
+
+/**
  * 以log形式打印 string 值
  * @重载方法
  * log模式打印 格式为 year/mouth/day hour:minute:second info xxx
  * @param text
  */
-void tLog(char *text) {
+void tLog(const char *text) {
     tPrintTime();
     printf("\033[34minfo \033[0m");
     tPrintln(text);
@@ -228,6 +195,18 @@ void tLog(char *text) {
 void tLog(int text) {
     tPrintTime();
     printf("\033[34minfo \033[0m");
+    tPrintln(text);
+}
+
+/**
+ * 以log形式打印 char 值
+ * @重载方法
+ * log模式打印 格式为 year/mouth/day hour:minute:second info xxx
+ * @param text
+ */
+void tLog(char text) {
+    tPrintTime();
+    tPrintInfo();
     tPrintln(text);
 }
 
@@ -267,7 +246,7 @@ void tBool(bool tag) {
  */
 int tRandom10() {
     srand((unsigned) time(NULL) + Rand_times);
-    Rand_times++;
+    Rand_times += 5;
     return rand() % 10;
 }
 
@@ -278,7 +257,7 @@ int tRandom10() {
  */
 int tRandom100() {
     srand((unsigned) time(NULL) + Rand_times);
-    Rand_times++;
+    Rand_times += 5;
     return rand() % 100;
 }
 
@@ -291,101 +270,105 @@ int tRandom100() {
  */
 int tRandom(int start, int end) {
     srand((unsigned) time(NULL) + Rand_times);
-    Rand_times++;
+    Rand_times += 5;
     return rand() % (end - start + 1) + start;
 }
 
 /**
+ * 单向链表节点
+ * @支持泛型 使用方法 tNode<T> *node = tCreateNode<T>(); 使用方法 tNode<T> *node = tCreateNode<T>(value);
+ * @tparam T
+ */
+template<class T>
+struct tNode {
+    T value;
+    struct tNode *next;
+};
+
+/**
  * 创建单向链表节点
- * @重载函数
+ * @支持泛型 使用方法 tNode<T> *node = tCreateNode<T>();
  * @return
  */
-tNodeI *tCreateNodeI() {
-    return (tNodeI *) malloc(sizeof(tNodeI));
+template<class T>
+tNode<T> *tCreateNode() {
+    return (tNode<T> *) malloc(sizeof(tNode<T>));
 }
 
 /**
- * 创建单向链表节点节点并为value赋值
- * @重载函数
+ * 创建泛型单向链表节点节点并为value赋值
+ * @支持泛型 使用方法 tNode<T> *node = tCreateNode(value);
  * @param data
  * @return
  */
-tNodeI *tCreateNodeI(int value) {
-    tNodeI *node = (tNodeI *) malloc(sizeof(tNodeI));
+template<class T>
+tNode<T> *tCreateNode(T value) {
+    tNode<T> *node = (tNode<T> *) malloc(sizeof(tNode<T>));
     node->value = value;
     return node;
 }
 
 /**
- * 创建双向链表节点
- * @重载函数
- * @return
+ * 单向链表实现的栈
+ * @支持泛型 使用方法 tStack<T> stack = tCreateStack<T>();
+ * @tparam T
  */
-tDNodeI *tCreateDNodeI() {
-    return (tDNodeI *) malloc(sizeof(tDNodeI));
-}
+template<class T>
+struct tStack {
+    int size;
+    tNode<T> *node;
+};
 
 /**
- * 创建双向链表节点并为value赋值
- * @重载函数
- * @param value
+ * 创建栈
+ * @支持泛型 使用方法 tStack<T> stack = tCreateStack<T>();
+ * @tparam T
  * @return
  */
-tDNodeI *tCreateDNodeI(int value) {
-    tDNodeI *node = (tDNodeI *) malloc(sizeof(tDNodeI));
-    node->value = value;
-    return node;
-}
-
-/**
- * 创建一个栈
- * @return
- */
-tStackI tCreateIStack() {
-    tStackI stack;
+template<class T>
+tStack<T> tCreateStack() {
+    tStack<T> stack;
     stack.size = 0;
-    stack.node = tCreateNodeI(INT32_MAX);
     return stack;
 }
 
 /**
  * 判断栈是否为空
- * @重载函数
+ * @支持泛型
  * @param stack
  * @return
  */
-bool tEmpty(tStackI &stack) {
+template<class T>
+bool tEmpty(tStack<T> &stack) {
     return !stack.size;
 }
 
 /**
  * 向栈中插入元素
- * @重载函数
+ * @支持泛型
  * @param stack
  * @param value
  * @return
  */
-void tPush(tStackI &stack, int value) {
-    tNodeI *node = tCreateNodeI(value);
-    node->next = stack.node->next;
-    stack.node->next = node;
+template<class T>
+void tPush(tStack<T> &stack, T value) {
+    tNode<T> *node = tCreateNode(value);
+    node->next = stack.node;
+    stack.node = node;
     stack.size++;
 }
 
 /**
  * 从栈中推出元素
- * @重载函数
+ * @支持泛型
  * @param stack
  * @return
  */
-int tPop(tStackI &stack) {
-    if (tEmpty(stack)) {
-        tLog("此栈中已无数据");
-        return stack.node->value;
-    }
-    tNodeI *node = stack.node->next;
-    stack.node->next = node->next;
-    int value = node->value;
+template<class T>
+T tPop(tStack<T> &stack) {
+    tNode<T> *node = stack.node;
+    stack.node = node->next;
+    T value = node->value;
     free(node);
     stack.size--;
     return value;
@@ -393,36 +376,107 @@ int tPop(tStackI &stack) {
 
 /**
  * 查看栈顶元素值
- * @重载函数
+ * @支持泛型
  * @param stack
  * @return
  */
-int tPeek(tStackI &stack) {
-    if (tEmpty(stack)) {
-        tLog("此栈中已无数据");
-        return -1;
-    }
-    return stack.node->next->value;
+template<class T>
+T tPeek(tStack<T> &stack) {
+    return stack.node->value;
 }
 
-tQueueI tCreateQueueI() {
-    tQueueI queue;
+/**
+ * 双向链表节点
+ * @支持泛型
+ */
+template<class T>
+struct tDNode {
+    T value;
+    tDNode *next;
+    tDNode *prior;
+};
+
+/**
+ * 双向链表实现的队列
+ * 仅允许尾进头出
+ * @支持泛型
+ * size 为当前队列中有多少元素
+ */
+template<class T>
+struct tQueue {
+    int size;
+    struct tDNode<T> *head, *tail;
+};
+
+/**
+ * 双向链表实现的队列
+ * 支持头尾双入双出
+ * @支持泛型
+ * size 为当前队列中有多少元素
+ */
+template<class T>
+struct tDeque {
+    int size;
+    struct tDNode<T> *head, *tail;
+};
+
+/**
+ * 创建双向链表节点
+ * @支持泛型 使用方法 tDNode<T> *node = tCreateDNode(value);
+ * @return
+ */
+template<class T>
+tDNode<T> *tCreateDNode() {
+    return (tDNode<T> *) malloc(sizeof(tDNode<T>));
+}
+
+/**
+ * 创建双向链表节点并为value赋值
+ * @支持泛型 使用方法 tDNode<T> *node = tCreateDNode(value);
+ * @param value
+ * @return
+ */
+template<class T>
+tDNode<T> *tCreateDNode(T value) {
+    tDNode<T> *node = (tDNode<T> *) malloc(sizeof(tDNode<T>));
+    node->value = value;
+    return node;
+}
+
+/**
+ * 创建队列
+ * @支持泛型 使用方法 tQueue<T> queue = tCreateQueue<T>();
+ * @tparam T
+ * @return
+ */
+template<class T>
+tQueue<T> tCreateQueue() {
+    tQueue<T> queue;
     queue.size = 0;
     return queue;
 }
 
 /**
  * 判断队列是否为空
- * @重载函数
+ * @支持泛型
  * @param stack
  * @return
  */
-bool tEmpty(tQueueI &queue) {
+template<class T>
+bool tEmpty(tQueue<T> &queue) {
     return !queue.size;
 }
 
-void tPush(tQueueI &queue, int value) {
-    tDNodeI *node = tCreateDNodeI(value);
+/**
+ * 元素入队(队尾)
+ * @支持泛型
+ * @tparam T
+ * @param queue
+ * @param value
+ */
+template<class T>
+void tPush(tQueue<T> &queue, T value) {
+    tDNode<T> *node = tCreateDNode(value);
     if (queue.size == 0) {
         queue.head = node;
     } else {
@@ -433,14 +487,18 @@ void tPush(tQueueI &queue, int value) {
     queue.size++;
 }
 
-int tPop(tQueueI &queue) {
-    if (tEmpty(queue)) {
-        tLog("此队列中已无数据");
-        return -1;
-    }
-    tDNodeI *node = queue.head;
+/**
+ * 队首元素出队
+ * @支持泛型
+ * @tparam T
+ * @param queue
+ * @return
+ */
+template<class T>
+T tPop(tQueue<T> &queue) {
+    tDNode<T> *node = queue.head;
     queue.head = node->next;
-    int value = node->value;
+    T value = node->value;
     free(node);
     queue.size--;
     if (queue.size == 0) {
@@ -449,10 +507,159 @@ int tPop(tQueueI &queue) {
     return value;
 }
 
-int tPeek(tQueueI &queue) {
-    if (tEmpty(queue)) {
-        tLog("此队列中已无数据");
-        return -1;
-    }
+/**
+ * 查看队首元素
+ * @支持泛型
+ * @tparam T
+ * @param queue
+ * @return
+ */
+template<class T>
+T tPeek(tQueue<T> &queue) {
     return queue.head->value;
+}
+
+/**
+ * 实现多字符串拼接
+ * @param quantity 传入字符串个数
+ * @param ... 类型为char*
+ * @return
+ */
+char *tStrCat(int quantity, ...) {
+    char *text = (char *) malloc(sizeof(char));
+    char *value;
+    va_list arg_ptr;
+    va_start(arg_ptr, quantity);
+    for (int i = 0; i < quantity; i++) {
+        value = va_arg(arg_ptr, char *);
+        strcat(text, value);
+    }
+    va_end(arg_ptr);
+    return text;
+}
+
+/**
+ * 创建双端队列
+ * @支持泛型 使用方法 tDeque<T> deque = tCreateDeque<T>();
+ * @tparam T
+ * @return
+ */
+template<class T>
+tDeque<T> tCreateDeque() {
+    tDeque<T> deque;
+    deque.size = 0;
+    return deque;
+}
+
+/**
+ * 判断双端队列是否为空
+ * @支持泛型
+ * @param stack
+ * @return
+ */
+template<class T>
+bool tEmpty(tDeque<T> &deque) {
+    return !deque.size;
+}
+
+/**
+ * 向双端队列队首插入元素
+ * @支持泛型
+ * @tparam T
+ * @param deque
+ * @param value
+ */
+template<class T>
+void tPush_front(tDeque<T> &deque, T value) {
+    tDNode<T> *node = tCreateDNode(value);
+    if (deque.size == 0) {
+        deque.tail = node;
+    } else {
+        node->next = deque.head;
+        deque.head->prior = node;
+    }
+    deque.head = node;
+    deque.size++;
+}
+
+/**
+ * 向双端队列队尾插入元素
+ * @支持泛型
+ * @tparam T
+ * @param deque
+ * @param value
+ */
+template<class T>
+void tPush_back(tDeque<T> &deque, T value) {
+    tDNode<T> *node = tCreateDNode(value);
+    if (deque.size == 0) {
+        deque.head = node;
+    } else {
+        node->prior = deque.tail;
+        deque.tail->next = node;
+    }
+    deque.tail = node;
+    deque.size++;
+}
+
+/**
+ * 从双端队列队首推出元素
+ * @支持泛型
+ * @tparam T
+ * @param deque
+ * @return
+ */
+template<class T>
+T tPop_front(tDeque<T> &deque) {
+    tDNode<T> *node = deque.head;
+    deque.head = node->next;
+    T value = node->value;
+    free(node);
+    deque.size--;
+    if (deque.size == 0) {
+        deque.tail = deque.head;
+    }
+    return value;
+}
+
+/**
+ * 从双端队列队尾推出元素
+ * @tparam T
+ * @param deque
+ * @return
+ */
+template<class T>
+T tPop_back(tDeque<T> &deque) {
+    tDNode<T> *node = deque.tail;
+    deque.tail = node->prior;
+    T value = node->value;
+    free(node);
+    deque.size--;
+    if (deque.size == 0) {
+        deque.head = deque.tail;
+    }
+    return value;
+}
+
+/**
+ * 读取双端队列队首元素
+ * @支持泛型
+ * @tparam T
+ * @param deque
+ * @return
+ */
+template<class T>
+T tPeek_front(tDeque<T> &deque) {
+    return deque.head->value;
+}
+
+/**
+ * 读取双端队列队尾元素
+ * @tparam T
+ * @param deque
+ * @return
+ */
+template<class T>
+T tPeek_back(tDeque<T> &deque) {
+    return deque.tail->value;
 }

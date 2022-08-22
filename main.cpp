@@ -6,8 +6,7 @@
  * 请将运行时代码填入此方法
  */
 void runCode() {
-    TreeNode *root = CreateTree(6);
-    LevelOrder(*root);
+    visitQueue(LevelOrder(*CreateTree(8)));
 }
 
 int main() {

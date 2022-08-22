@@ -22,6 +22,21 @@ void visitNode(TreeNode &node) {
 }
 
 /**
+ * 打印遍历队列
+ * @param node
+ */
+void visitQueue(tQueue<TreeNode> queue) {
+    tPrintTimeInfo();
+    tDNode<TreeNode> *node = queue.head;
+    while (node != NULL) {
+        tPrint(node->value.data);
+        tPrint(" ");
+        node = node->next;
+    }
+    tEnter();
+}
+
+/**
  * 创建一个二叉树节点
  * @重载方法
  * @return
@@ -69,30 +84,36 @@ TreeNode *CreateTree(int maxNode) {
     TreeNode *root = CreateNode(tRandom100());
     --maxNode;
     TreeNode *temp = root;
-    tLog("根节点");
-    tLog(temp->data);
+    tPrintTime();
+    tPrintInfo();
+    tPrint("根节点 ");
+    tPrintln(temp->data);
     for (int i = 0; i < maxNode;) {
         if (tRandom10() % 2) {
             if (temp->LNode && tRandom10() % 2) {
                 temp = temp->LNode;
-                tLog("左子树");
+                tLog("转向左子树");
             }
             if (!temp->LNode) {
                 temp->LNode = CreateNode(tRandom100());
                 ++i;
-                tLog("左孩子");
-                tLog(temp->LNode->data);
+                tPrintTime();
+                tPrintInfo();
+                tPrint("左孩子 ");
+                tPrintln(temp->LNode->data);
             }
         } else {
             if (temp->RNode && tRandom10() % 2) {
                 temp = temp->RNode;
-                tLog("右子树");
+                tLog("转向右子树");
             }
             if (!temp->RNode) {
                 temp->RNode = CreateNode(tRandom100());
                 ++i;
-                tLog("右孩子");
-                tLog(temp->RNode->data);
+                tPrintTime();
+                tPrintInfo();
+                tPrint("右孩子 ");
+                tPrintln(temp->RNode->data);
             }
         }
     }
@@ -100,97 +121,25 @@ TreeNode *CreateTree(int maxNode) {
     return root;
 }
 
-struct tDNodeT {
-    TreeNode value;
-    tDNodeT *next;
-    tDNodeT *prior;
-};
-
-struct tQueueT {
-    int size;
-    struct tDNodeT *head, *tail;
-};
-
-tQueueT tCreateQueueT() {
-    tQueueT queue;
-    queue.size = 0;
-    return queue;
-}
-
 /**
- * 创建双向链表节点并为value赋值
- * @重载函数
- * @param value
+ * 二叉树层次遍历打印节点值并返回节点队列
+ * @param root
  * @return
  */
-tDNodeT *tCreateDNodeT(TreeNode value) {
-    tDNodeT *node = (tDNodeT *) malloc(sizeof(tDNodeT));
-    node->value = value;
-    return node;
-}
-
-
-/**
- * 判断队列是否为空
- * @重载函数
- * @param stack
- * @return
- */
-bool tEmpty(tQueueT &queue) {
-    return !queue.size;
-}
-
-void tPush(tQueueT &queue, TreeNode &value) {
-    tDNodeT *node = tCreateDNodeT(value);
-    if (queue.size == 0) {
-        queue.head = node;
-    } else {
-        node->prior = queue.tail;
-        queue.tail->next = node;
-    }
-    queue.tail = node;
-    queue.size++;
-}
-
-TreeNode tPop(tQueueT &queue) {
-    if (tEmpty(queue)) {
-        tLog("此队列中已无数据");
-        return TreeNode{};
-    }
-    tDNodeT *node = queue.head;
-    queue.head = node->next;
-    TreeNode value = node->value;
-    free(node);
-    queue.size--;
-    if (queue.size == 0) {
-        queue.tail = queue.head;
-    }
-    return value;
-}
-
-TreeNode tPeek(tQueueT &queue) {
-    if (tEmpty(queue)) {
-        tLog("此队列中已无数据");
-        return TreeNode{};
-    }
-    return queue.head->value;
-}
-
-/**
- * 二叉树的层次遍历/层序遍历
- */
-void LevelOrder(TreeNode root) {
-    tQueueT queue = tCreateQueueT();
+tQueue<TreeNode> LevelOrder(TreeNode &root) {
+    tQueue<TreeNode> queue = tCreateQueue<TreeNode>();
+    tQueue<TreeNode> ret = tCreateQueue<TreeNode>();
     tPush(queue, root);
     TreeNode node;
     while (!tEmpty(queue)) {
         node = tPop(queue);
-        visitNode(node);
-        if (node.LNode != NULL){
-            tPush(queue,*node.LNode);
+        tPush(ret, node);
+        if (node.LNode != NULL) {
+            tPush(queue, *node.LNode);
         }
-        if (node.RNode != NULL){
-            tPush(queue,*node.RNode);
+        if (node.RNode != NULL) {
+            tPush(queue, *node.RNode);
         }
     }
+    return ret;
 }
