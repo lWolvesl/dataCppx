@@ -1,6 +1,10 @@
 # DataCpp
 
 数据结构 C/C++实现,更新至第五章
+- 项目为cmake项目，需要本地或服务器提供cmake支持
+- cmake文件即为根目录下的 ```CMakeLists.txt```文件
+- 若需要 ```wolves```提供运行环境支持，请联系我请查看
+- ```https://www.gitlab.wolves.top:46080/demoHub/readme```
 
 ## 克隆项目(以下均可)
 - ```git clone https://gitee.com/lWolvesl/datacppx.git```
