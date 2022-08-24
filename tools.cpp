@@ -253,8 +253,8 @@ void tBool(bool tag) {
  * @author li
  * @return
  */
-int getRands(){
-    if (Rand_index == -1||Rand_index == 40){
+int getRands() {
+    if (Rand_index == -1 || Rand_index == 40) {
         srand((unsigned) time(NULL) + Rand_times);
         Rand_times += 1;
         rands[Rand_index] = rand();
@@ -353,7 +353,7 @@ tStack<T> tCreateStack() {
  * @return
  */
 template<class T>
-bool tEmpty(tStack<T> &stack) {
+bool empty(tStack<T> &stack) {
     return !stack.size;
 }
 
@@ -365,7 +365,7 @@ bool tEmpty(tStack<T> &stack) {
  * @return
  */
 template<class T>
-void tPush(tStack<T> &stack, T value) {
+void push(tStack<T> &stack, T value) {
     tNode<T> *node = tCreateNode(value);
     node->next = stack.node;
     stack.node = node;
@@ -379,7 +379,7 @@ void tPush(tStack<T> &stack, T value) {
  * @return
  */
 template<class T>
-T tPop(tStack<T> &stack) {
+T pop(tStack<T> &stack) {
     tNode<T> *node = stack.node;
     stack.node = node->next;
     T value = node->value;
@@ -395,7 +395,7 @@ T tPop(tStack<T> &stack) {
  * @return
  */
 template<class T>
-T tPeek(tStack<T> &stack) {
+T peek(tStack<T> &stack) {
     return stack.node->value;
 }
 
@@ -477,7 +477,7 @@ tQueue<T> tCreateQueue() {
  * @return
  */
 template<class T>
-bool tEmpty(tQueue<T> &queue) {
+bool empty(tQueue<T> &queue) {
     return !queue.size;
 }
 
@@ -489,7 +489,7 @@ bool tEmpty(tQueue<T> &queue) {
  * @param value
  */
 template<class T>
-void tPush(tQueue<T> &queue, T value) {
+void push(tQueue<T> &queue, T value) {
     tDNode<T> *node = tCreateDNode(value);
     if (queue.size == 0) {
         queue.head = node;
@@ -509,11 +509,11 @@ void tPush(tQueue<T> &queue, T value) {
  * @return
  */
 template<class T>
-T tPop(tQueue<T> &queue) {
+T pop(tQueue<T> &queue) {
     tDNode<T> *node = queue.head;
     queue.head = node->next;
     T value = node->value;
-    delete(node); //free
+    delete (node); //free
     queue.size--;
     if (queue.size == 0) {
         queue.tail = queue.head;
@@ -529,8 +529,13 @@ T tPop(tQueue<T> &queue) {
  * @return
  */
 template<class T>
-T tPeek(tQueue<T> &queue) {
+T peek(tQueue<T> &queue) {
     return queue.head->value;
+}
+
+template<class T>
+T peek_back(tQueue<T> &queue) {
+    return queue.tail->value;
 }
 
 /**

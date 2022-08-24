@@ -7,7 +7,7 @@
  */
 void runCode() {
     auto tree = CreateFullTree(10);
-    auto queue = PreOrder(tree);
+    auto queue = InOrder(tree);
     visitQueue(queue);
 }
 

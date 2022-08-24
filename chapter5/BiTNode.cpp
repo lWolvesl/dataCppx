@@ -127,19 +127,19 @@ BitTree CreateFullTree(int maxNode) {
     BitTree root = CreateNode(tRandom100());
     tLog(tStrCat(2, "节点 1 ", tIntToString(root->data)));
     tQueue<BitTree> queue = tCreateQueue<BitTree>();
-    tPush(queue, root);
+    push(queue, root);
     for (int i = 1; i < maxNode;) {
-        auto node = tPop(queue);
+        auto node = pop(queue);
         if (node->LNode == NULL) {
             node->LNode = CreateNode(tRandom100());
             tLog(tStrCat(4, "节点 ", tIntToString(i + 1), " ", tIntToString(node->LNode->data)));
-            tPush(queue, node->LNode);
+            push(queue, node->LNode);
             i++;
         }
         if (i < maxNode && node->RNode == NULL) {
             node->RNode = CreateNode(tRandom100());
             tLog(tStrCat(4, "节点 ", tIntToString(i + 1), " ", tIntToString(node->RNode->data)));
-            tPush(queue, node->RNode);
+            push(queue, node->RNode);
             i++;
         }
     }
@@ -154,16 +154,16 @@ BitTree CreateFullTree(int maxNode) {
 tQueue<BitTree> LevelOrder(BitTree root) {
     tQueue<BitTree> queue = tCreateQueue<BitTree>();
     tQueue<BitTree> ret = tCreateQueue<BitTree>();
-    tPush(queue, root);
+    push(queue, root);
     BitTree node;
-    while (!tEmpty(queue)) {
-        node = tPop(queue);
-        tPush(ret, node);
+    while (!empty(queue)) {
+        node = pop(queue);
+        push(ret, node);
         if (node->LNode != NULL) {
-            tPush(queue, node->LNode);
+            push(queue, node->LNode);
         }
         if (node->RNode != NULL) {
-            tPush(queue, node->RNode);
+            push(queue, node->RNode);
         }
     }
     tLog("完成层序遍历");
@@ -178,7 +178,7 @@ tQueue<BitTree> LevelOrder(BitTree root) {
  */
 void PreOrder_rf(BitTree node, tQueue<BitTree> &queue) {
     if (node != NULL) {
-        tPush(queue, node);
+        push(queue, node);
         PreOrder_rf(node->LNode, queue);
         PreOrder_rf(node->RNode, queue);
     }
@@ -201,23 +201,78 @@ tQueue<BitTree> PreOrder_r(BitTree node) {
 
 /**
  * 非递归式先序遍历
+ * @思想 可以参考代码加快理解
+        先序遍历为 中->左->右 ，实现时①因为要先输出左节点，然后再遍历左节点，就可以把右节点先入栈，再把左节点入栈。
+     此时栈中左节点就在右节点之上，此时再从栈取，取到的栈顶元素就是左节点，此时输出左节点值，再对左节点进行①操作，即可
+     连续读取到树的最左节点，然后此时左节点下已经没有左节点，即开始读取他的右节点并执行①，当左右节点都为空时，即开始读
+     他的右兄弟节点并执行①，依此逻辑，即可实现非递归式先序遍历。
  * @param node
  * @return
  */
 tQueue<BitTree> PreOrder(BitTree root) {
-    tQueue<BitTree> queue = tCreateQueue<BitTree>();
-    tStack<BitTree> stack = tCreateStack<BitTree>();
-    tPush(stack, root);
-    while (!tEmpty(stack)) {
-        TreeNode *node = tPop(stack);
-        tPush(queue, node);
-        if (node->RNode != NULL) {
-            tPush(stack, node->RNode);
-        }
-        if (node->LNode != NULL) {
-            tPush(stack, node->LNode);
-        }
+    tQueue<BitTree> queue = tCreateQueue<BitTree>();    //初始化队列
+    tStack<BitTree> stack = tCreateStack<BitTree>();    //初始化栈
+    push(stack, root);                        //将跟节点放入栈中
+    while (!empty(stack)) {                         //当栈不空时，代表还有节点未遍历
+        TreeNode *node = pop(stack);                //节点出栈
+        push(queue, node);                    //节点输出入队
+        if (node->RNode != NULL) {                      //先判断是否存在右节点
+            push(stack, node->RNode);         //存在即将右节点入队
+        }                                               //若下面没有左节点了，即下次循环就会对右节点操作，即先序遍历右子树
+        if (node->LNode != NULL) {                      //判断是否存在左节点
+            push(stack, node->LNode);         //此时左节点入栈
+        }                                               //下次递归这个左节点就在栈顶，然后继续对此节点向下遍历
     }
     tLog("非递归式先序遍历完成");
+    return queue;
+}
+
+/**
+ * 递归中序遍历核心部分
+ * @param node
+ * @param queue
+ */
+void InOrder_rf(BitTree node, tQueue<BitTree> &queue) {
+    if (node != NULL) {
+        InOrder_rf(node->LNode, queue);
+        push(queue, node);
+        InOrder_rf(node->RNode, queue);
+    }
+}
+
+/**
+ * 递归中序遍历
+ * @param root
+ * @return
+ */
+tQueue<BitTree> InOrder_r(BitTree root) {
+    tQueue<BitTree> queue = tCreateQueue<BitTree>();
+    if (root != NULL) {
+        InOrder_rf(root, queue);
+    }
+    tLog("递归式中序遍历完成");
+    return queue;
+}
+
+/**
+ * 非递归实现中序遍历
+ * @param root
+ * @return
+ */
+tQueue<BitTree> InOrder(BitTree root) {
+    tQueue<BitTree> queue = tCreateQueue<BitTree>();
+    tStack<BitTree> stack = tCreateStack<BitTree>();
+    BitTree node = root;
+    while (node != NULL || !empty(stack)) {
+        if (node != NULL) {
+            push(stack, node);
+            node = node->LNode;
+        } else {
+            node = pop(stack);
+            push(queue, node);
+            node = node->RNode;
+        }
+    }
+    tLog("非递归式中序遍历完成");
     return queue;
 }
