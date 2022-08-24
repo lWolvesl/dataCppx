@@ -28,8 +28,8 @@ void visitNode(TreeNode &node) {
  */
 void visitQueue(tQueue<BitTree> queue) {
     tPrintTimeInfo();
-    tDNode<BitTree> *node = queue.head;
-    while (node != nullptr) {
+    auto node = queue.head;
+    for (int i = 0; i < queue.size; ++i) {
         tPrint(node->value->data);
         tPrint(" ");
         node = node->next;
@@ -79,7 +79,12 @@ BitTree CreateNode(int data, TreeNode &lNode, TreeNode &rNode) {
     return root;
 }
 
-BitTree CreateTree(int maxNode) {
+/**
+ * 创建一棵节点总数为maxNode的随机树（全随机）
+ * @param maxNode
+ * @return
+ */
+BitTree CreateRandomTree(int maxNode) {
     tLog("创建树");
     BitTree root = CreateNode(tRandom100());
     BitTree node = root;
@@ -112,6 +117,36 @@ BitTree CreateTree(int maxNode) {
 }
 
 /**
+ * 创建一棵总节点数为maxNode的满二叉树
+ * @原理：创建节点后入队，然后出队再左右节点，依次循环，类似创建一个层序遍历。
+ * @param maxNode
+ * @return
+ */
+BitTree CreateFullTree(int maxNode) {
+    tLog("创建树");
+    BitTree root = CreateNode(tRandom100());
+    tLog(tStrCat(2, "节点 1 ", tIntToString(root->data)));
+    tQueue<BitTree> queue = tCreateQueue<BitTree>();
+    tPush(queue, root);
+    for (int i = 1; i < maxNode;) {
+        auto node = tPop(queue);
+        if (node->LNode == NULL) {
+            node->LNode = CreateNode(tRandom100());
+            tLog(tStrCat(4, "节点 ", tIntToString(i + 1), " ", tIntToString(node->LNode->data)));
+            tPush(queue, node->LNode);
+            i++;
+        }
+        if (i < maxNode && node->RNode == NULL) {
+            node->RNode = CreateNode(tRandom100());
+            tLog(tStrCat(4, "节点 ", tIntToString(i + 1), " ", tIntToString(node->RNode->data)));
+            tPush(queue, node->RNode);
+            i++;
+        }
+    }
+    return root;
+}
+
+/**
  * 二叉树层次遍历打印节点值并返回节点队列
  * @param root
  * @return
@@ -124,7 +159,6 @@ tQueue<BitTree> LevelOrder(BitTree root) {
     while (!tEmpty(queue)) {
         node = tPop(queue);
         tPush(ret, node);
-        tLog(node->data);
         if (node->LNode != NULL) {
             tPush(queue, node->LNode);
         }
@@ -161,6 +195,7 @@ tQueue<BitTree> PreOrder_r(BitTree node) {
     if (node != NULL) {
         PreOrder_rf(node, queue);
     }
+    tLog("递归式先序遍历完成");
     return queue;
 }
 
@@ -173,14 +208,16 @@ tQueue<BitTree> PreOrder(BitTree root) {
     tQueue<BitTree> queue = tCreateQueue<BitTree>();
     tStack<BitTree> stack = tCreateStack<BitTree>();
     tPush(stack, root);
-    if (!tEmpty(stack)) {
-        auto node = tPop(stack);
-        if (node->RNode) {
+    while (!tEmpty(stack)) {
+        TreeNode *node = tPop(stack);
+        tPush(queue, node);
+        if (node->RNode != NULL) {
             tPush(stack, node->RNode);
         }
-        if (node->LNode) {
+        if (node->LNode != NULL) {
             tPush(stack, node->LNode);
         }
     }
+    tLog("非递归式先序遍历完成");
     return queue;
 }

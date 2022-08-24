@@ -513,7 +513,7 @@ T tPop(tQueue<T> &queue) {
     tDNode<T> *node = queue.head;
     queue.head = node->next;
     T value = node->value;
-    free(node);
+    delete(node); //free
     queue.size--;
     if (queue.size == 0) {
         queue.tail = queue.head;

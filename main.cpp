@@ -1,4 +1,4 @@
-#include "tools.cpp"
+//#include "tools.cpp"
 #include "chapter5/BiTNode.cpp"
 
 /**
@@ -6,8 +6,8 @@
  * 请将运行时代码填入此方法
  */
 void runCode() {
-    auto tree = CreateTree(10);
-    auto queue = PreOrder_r(tree);
+    auto tree = CreateFullTree(10);
+    auto queue = PreOrder(tree);
     visitQueue(queue);
 }
 
