@@ -11,6 +11,12 @@
 #include "stdbool.h"
 
 /**
+ * @brief 定义编译运行环境
+ * 1.cmake 2.code runner
+ */
+int RUN_ENV = 1;
+
+/**
  * 随机生成数字的种子更改值
  */
 int Rand_times = 0;
@@ -68,7 +74,7 @@ void tEnter() {
 
 char *tGetTimeStr() {
     //获取标准时间
-    char *times = (char *) malloc(sizeof(char) * 20);
+    char *times = (char *) malloc(sizeof(char) * 29);
     time_t timeX;
     struct tm *p;
     time(&timeX);
@@ -135,7 +141,11 @@ void tPrint(const char *text) {
  * 打印info
  */
 void tPrintInfo() {
-    printf("\033[34minfo \033[0m");
+    if (RUN_ENV == 1){
+        printf("\033[34minfo \033[0m");
+    }else if(RUN_ENV == 2){
+        printf("info ");
+    }
 }
 
 /**
@@ -189,8 +199,7 @@ void tPrintln(char text) {
  * @param text
  */
 void tLog(const char *text) {
-    tPrintTime();
-    printf("\033[34minfo \033[0m");
+    tPrintTimeInfo();
     tPrintln(text);
 }
 
@@ -201,8 +210,7 @@ void tLog(const char *text) {
  * @param text
  */
 void tLog(int text) {
-    tPrintTime();
-    printf("\033[34minfo \033[0m");
+    tPrintTimeInfo();
     tPrintln(text);
 }
 

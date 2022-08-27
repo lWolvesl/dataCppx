@@ -12,6 +12,8 @@ void runCode() {
 }
 
 int main() {
+    //运行环境：1 为cmake   2 为code runner
+    RUN_ENV = 1;
     tStart();
     runCode();
     tEnd();
