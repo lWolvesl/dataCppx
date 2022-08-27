@@ -74,7 +74,7 @@ void tEnter() {
 
 char *tGetTimeStr() {
     //获取标准时间
-    char *times = (char *) malloc(sizeof(char) * 29);
+    char *times = (char *) malloc(sizeof(char) * 30);
     time_t timeX;
     struct tm *p;
     time(&timeX);
