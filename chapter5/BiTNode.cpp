@@ -163,7 +163,7 @@ BitTree CreateFullTree(int maxNode) {
 }
 
 /**
- * 二叉树层次遍历打印节点值并返回节点队列
+ * 二叉树层次遍历，第一个队列暂存节点，第二个队列为最终返回节点
  * @param root
  * @return
  */
@@ -307,7 +307,7 @@ tQueue<BitTree> InOrder(BitTree root) {
  * @param node 
  * @param queue 
  */
-void PostOrder_rf(BitTree node,tQueue<BitTree> &queue){
+void PostOrder_rf(BitTree node, tQueue<BitTree> &queue) {
     if (node != NULL) {
         PostOrder_rf(node->LNode, queue);
         PostOrder_rf(node->RNode, queue);
@@ -321,9 +321,9 @@ void PostOrder_rf(BitTree node,tQueue<BitTree> &queue){
  * @param root 
  * @return tQueue<BitTree> 
  */
-tQueue<BitTree> PostOrder_r(BitTree root){
+tQueue<BitTree> PostOrder_r(BitTree root) {
     tQueue<BitTree> queue = tCreateQueue<BitTree>();
-    PostOrder_rf(root,queue);
+    PostOrder_rf(root, queue);
     tLog("后序遍历完成");
     return queue;
 }
@@ -354,7 +354,7 @@ tQueue<BitTree> PostOrder(BitTree root) {
         } else {
             node = peek(stack);                                 //此处读取栈顶
             if (node->RNode != NULL && node->RNode != temp) {   //判断此节点是否存在左节点并且此节点是否被读取过
-                node = node->RNode;                     
+                node = node->RNode;
             } else {
                 node = pop(stack);                              //此时代表无右节点或右节点被读取,即出栈
                 push(queue, node);

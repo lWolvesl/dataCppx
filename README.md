@@ -11,7 +11,7 @@
 
 ## 克隆项目(以下均可)
 - ```git clone https://gitee.com/lWolvesl/datacppx.git```
-- ```git clone https://www.gitlab.wolves.top:46080/wolves/datacppx.git```
+- ```git clone https://www.gitlab.wolves.top:46080/wolves/datacpp.git```
 - ```git clone https://github.com/lWolvesl/dataCppx.git```
 
 

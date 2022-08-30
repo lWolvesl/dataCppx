@@ -142,9 +142,9 @@ void tPrint(const char *text) {
  * 打印info
  */
 void tPrintInfo() {
-    if (RUN_ENV == 1){
+    if (RUN_ENV == 1) {
         printf("\033[34minfo \033[0m");
-    }else if(RUN_ENV == 2){
+    } else if (RUN_ENV == 2) {
         printf("info ");
     }
 }
