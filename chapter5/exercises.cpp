@@ -1,11 +1,36 @@
 #include "../chapter5/BiTNode.cpp"
-#include "../tools.cpp"
 
 //习题 二
 
 // 3. 详见 chapter5/BiTNode.cpp 的 PostOrder 函数
 
+/**
+ * @brief 自下而上，自左至右的层次遍历算法
+ * 
+ * @分析 1.正常执行层序遍历。然后将队列入栈，输出栈即为从下至上，从左到右的的遍历序列。（终极取巧)
+ *      3.用递归的思想，将入队操作至后
+ */
+tStack<BitTree> exercises4_1(BitTree root){
+    auto queue = LevelOrder(root);
+    auto stack = tCreateStack<BitTree>();
+    while (!empty(queue))
+    {
+        push(stack,pop(queue));
+    }
+    return stack;
+}
 
+//测试第四题第一种方法
+void run_4_1(){
+    auto tree = CreateRandomTree(10);  //创建随机树
+    auto queue = exercises4_1(tree);
+    visitQueue(queue);
+    tLog(size(queue));
+}
+
+tStack<BitTree> exercises4_2(BitTree root){
+
+}
 
 /**
  * @brief 5.求二叉树高度,非递归
