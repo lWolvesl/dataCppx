@@ -72,6 +72,7 @@ void tEnter() {
     printf("\n");
 }
 
+//eg. 1900/01/01 00:00:00
 char *tGetTimeStr() {
     //获取标准时间
     char *times = (char *) malloc(sizeof(char) * 30);
@@ -204,6 +205,17 @@ void tLog(const char *text) {
 }
 
 /**
+ * 不换行以log形式打印 string 值
+ * @重载方法
+ * log模式打印 格式为 year/mouth/day hour:minute:second info xxx
+ * @param text
+ */
+void tLog_f(const char *text) {
+    tPrintTimeInfo();
+    tPrint(text);
+}
+
+/**
  * 以log形式打印 int 值
  * @重载方法
  * log模式打印 格式为 year/mouth/day hour:minute:second info xxx
@@ -236,12 +248,12 @@ void tEnd() {
     tLog("done!");
 }
 
-// int判断大小
+// int判断大小，返回较大值
 int tMaxInt(int a, int b) {
     return a > b ? a : b;
 }
 
-// int判断小
+// int判断大小，返回较小值
 int tMinInt(int a, int b) {
     return a < b ? a : b;
 }
@@ -408,6 +420,18 @@ T peek(tStack<T> &stack) {
 }
 
 /**
+ * @brief 查看当前栈大小
+ * @支持泛型
+ * @tparam T 
+ * @param stack 
+ * @return int 
+ */
+template<class T>
+int size(tStack<T> &stack) {
+    return stack.size;
+}
+
+/**
  * 双向链表节点
  * @支持泛型
  */
@@ -541,9 +565,16 @@ T peek(tQueue<T> &queue) {
     return queue.head->value;
 }
 
+/**
+ * @brief 获取队列长度
+ * 
+ * @tparam T 
+ * @param queue 
+ * @return int 
+ */
 template<class T>
-T peek_back(tQueue<T> &queue) {
-    return queue.tail->value;
+int size(tQueue<T> &queue) {
+    return queue.size;
 }
 
 /**

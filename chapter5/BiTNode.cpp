@@ -202,7 +202,8 @@ tQueue<BitTree> PreOrder_r(BitTree node) {
 /**
  * 非递归式先序遍历
  * @思想 可以参考代码加快理解
-        先序遍历为 中->左->右 ，实现时①因为要先输出左节点，然后再遍历左节点，就可以把右节点先入栈，再把左节点入栈。
+        先序遍历为 中->左->右 ，即为对每个节点来说，先遍历自己，再遍历其左，最后再遍历其右。
+     实现时①因为要先输出左节点，然后再遍历左节点，就可以把右节点先入栈，再把左节点入栈。
      此时栈中左节点就在右节点之上，此时再从栈取，取到的栈顶元素就是左节点，此时输出左节点值，再对左节点进行①操作，即可
      连续读取到树的最左节点，然后此时左节点下已经没有左节点，即开始读取他的右节点并执行①，当左右节点都为空时，即开始读
      他的右兄弟节点并执行①，依此逻辑，即可实现非递归式先序遍历。
@@ -256,6 +257,13 @@ tQueue<BitTree> InOrder_r(BitTree root) {
 
 /**
  * 非递归实现中序遍历
+ * @thinking 中序遍历的顺序为 左中右 ，即为对每个节点来说，先遍历其左，再遍历自己，最后再遍历其右。
+ *          对于整颗树来说，第一个节点就应该是整个树的最左边的节点，第二个节点就是他的父节点
+ *          然后再遍历父节点的右子树的最左边的节点，当此节点遍历完之后再向上遍历，因此实现时先找到最左节点，
+ *          即一直向左孩子走，沿途的节点依次入栈，由于一直向左走，当发现自己变成空值时,栈顶的节点就是最左节
+ *          点，此时栈顶出栈即为此树中序遍历第一个节点，然后从栈中再出栈，即为最左节点的父节点，也是中序遍历
+ *          第二个节点，再访问此节点的右子树，重复上述过程。当右子树遍历完时，依旧是正常出栈，此时出栈的就是
+ *          第二个节点的父节点，然后再其右子树遍历，直到完成遍历。
  * @param root
  * @return
  */
@@ -276,3 +284,70 @@ tQueue<BitTree> InOrder(BitTree root) {
     tLog("非递归式中序遍历完成");
     return queue;
 }
+
+/**
+ * @brief 递归式二叉树后序遍历核心部分
+ * 
+ * @param node 
+ * @param queue 
+ */
+void PostOrder_rf(BitTree node,tQueue<BitTree> &queue){
+    if (node != NULL) {
+        PostOrder_rf(node->LNode, queue);
+        PostOrder_rf(node->RNode, queue);
+        push(queue, node);
+    }
+}
+
+/**
+ * @brief 递归式二叉树后序遍历
+ * 
+ * @param root 
+ * @return tQueue<BitTree> 
+ */
+tQueue<BitTree> PostOrder_r(BitTree root){
+    tQueue<BitTree> queue = tCreateQueue<BitTree>();
+    PostOrder_rf(root,queue);
+    tLog("后序遍历完成");
+    return queue;
+}
+
+/**
+ * @brief 非递归式后序遍历算法
+ * @thinking 后序遍历顺序为 左右中 ，即为对每个节点来说，先遍历其左，再遍历其右，最后再遍历自己。
+ *          对于整颗树来说，①先走到树的最左边，沿途节点依次入栈，然后当自己为空时，②栈顶节点出栈，
+ *          此节点对应左右中的 左 。此出栈的节点即为最左节点，然后检查此节点的右兄弟节点，即检查目
+ *          前栈顶节点的右节点，若此右节点不空，则继续执行①，即走到此子树的最左节点，然后继续执行
+ *          ②，当其右兄弟节点为空时，则栈顶节点出栈，即为此节点的父节点出栈，对应左右中的 中 。
+ *          依次遍历，直到整颗树结束。与前中序遍历不同的是，由于中节点在其右节点后出，因此访问到中
+ *          节点时不能将其出栈，若直接判断左右是否为空将会陷入死循环，因此创建一个标记保存他，当节
+ *          点出栈时，将此节点标记。当从栈顶读到的的节点的右孩子值为此节点时，表示左右均已遍历或为
+ *          空即出中节点。并将节点置，这样下次遍历就会读栈顶。
+ * @param root 
+ * @return tQueue<BitTree> 
+ */
+tQueue<BitTree> PostOrder(BitTree root) {
+    tQueue<BitTree> queue = tCreateQueue<BitTree>();
+    tStack<BitTree> stack = tCreateStack<BitTree>();
+    BitTree node = root;
+    BitTree temp = NULL;
+    while (node != NULL || !empty(stack)) {
+        if (node != NULL) {
+            push(stack, node);                                  //一路向左
+            node = node->LNode;
+        } else {
+            node = peek(stack);                                 //此处读取栈顶
+            if (node->RNode != NULL && node->RNode != temp) {   //判断此节点是否存在左节点并且此节点是否被读取过
+                node = node->RNode;                     
+            } else {
+                node = pop(stack);                              //此时代表无右节点或右节点被读取,即出栈
+                push(queue, node);
+                temp = node;                                    //保存此节点表示已访问
+                node = NULL;                                    //此时下轮循环便会读从栈顶出栈，然后判断右节点是否访问
+            }                                                   //注意：左兄弟节点一定先于右兄弟节点出栈
+        }
+    }
+    tLog("非递归式后遍历完成");
+    return queue;
+}
+
