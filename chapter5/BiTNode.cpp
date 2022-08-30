@@ -133,27 +133,27 @@ BitTree CreateRandomTree(int maxNode) {
 }
 
 /**
- * 创建一棵总节点数为maxNode的满二叉树
+ * 创建一棵总节点数为maxNode的完全二叉树,节点值100内不重复
  * @原理：创建节点后入队，然后出队再左右节点，依次循环，类似创建一个层序遍历。
  * @param maxNode
  * @return
  */
 BitTree CreateFullTree(int maxNode) {
     tLog("创建树");
-    BitTree root = CreateNode(tRandom100());
+    BitTree root = CreateNode(tRandomNoSame());
     tLog(tStrCat(2, "节点 1 ", tIntToString(root->data)));
     tQueue<BitTree> queue = tCreateQueue<BitTree>();
     push(queue, root);
     for (int i = 1; i < maxNode;) {
         auto node = pop(queue);
         if (node->LNode == NULL) {
-            node->LNode = CreateNode(tRandom100());
+            node->LNode = CreateNode(tRandomNoSame());
             tLog(tStrCat(4, "节点 ", tIntToString(i + 1), " ", tIntToString(node->LNode->data)));
             push(queue, node->LNode);
             i++;
         }
         if (i < maxNode && node->RNode == NULL) {
-            node->RNode = CreateNode(tRandom100());
+            node->RNode = CreateNode(tRandomNoSame());
             tLog(tStrCat(4, "节点 ", tIntToString(i + 1), " ", tIntToString(node->RNode->data)));
             push(queue, node->RNode);
             i++;

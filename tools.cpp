@@ -9,6 +9,7 @@
 #include "stdlib.h"
 #include "string.h"
 #include "stdbool.h"
+#include "math.h"
 
 /**
  * @brief 定义编译运行环境
@@ -22,6 +23,7 @@ int RUN_ENV = 1;
 int Rand_times = 0;
 int Rand_index = -1;
 int rands[40];
+int RandC[100];
 
 // 十进制int转char* & string
 char *tIntToString(int num)//10进制
@@ -306,6 +308,19 @@ int tRandom100() {
  */
 int tRandom(int start, int end) {
     return getRands() % (end - start + 1) + start;
+}
+
+int tRandomNoSame() {
+    int rand = 1;
+    while (rand == 1) {
+        rand = tRandom100();
+        if (RandC[rand] == 0) {
+            RandC[tRandom100()] = 1;
+            break;
+        }
+        rand = 1;
+    }
+    return rand;
 }
 
 /**
@@ -720,4 +735,23 @@ T tPeek_front(tDeque<T> &deque) {
 template<class T>
 T tPeek_back(tDeque<T> &deque) {
     return deque.tail->value;
+}
+
+/**
+ * 从数组中找第一个相同的元素
+ * @支持泛型
+ * @tparam T 数组类型
+ * @param arr 数组
+ * @param length 数组长度
+ * @param element 所需要寻找的元素
+ * @return 若返回为-1，则在数组中未找到该元素
+ */
+template<class T>
+int Index(T arr[], int length, T element) {
+    for (int i = 0; i < length; ++i) {
+        if (element == arr[i]) {
+            return i;
+        }
+    }
+    return -1;
 }
