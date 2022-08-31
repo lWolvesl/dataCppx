@@ -519,7 +519,7 @@ void run14() {
 }
 
 /**
- * @brief 15.已知满二叉树的先序遍历，求其后续遍历
+ * * @brief 15.已知满二叉树的先序遍历，求其后续遍历
  *
  * @思想  首先，满二叉树满足节点总数为 2^n - 1,n为层数
  *       对于每个节点的左右子树的节点总个数一定相同
@@ -542,38 +542,53 @@ void run14() {
  *          对比可知，可以采取分治的思想，对左右子树分别进行头->尾
  *      的操作，对所有左右节点完成分治后，即可将先序转换为后序。
  *
- *   书上采取递归方式完成，以下算法采取非递归
+ *   采用递归方法完成
+ * @核心部分
+ * @param pre       先序遍历数组
+ * @param perStart
+ * @param perEnd
+ * @param post      将生成对后序遍历数组
+ * @param postStart
+ * @param postEnd
+ */
+void PreToPost(int pre[], int perStart, int perEnd, int post[], int postStart, int postEnd) {
+    int half;
+    if (perEnd >= perStart) {
+        post[postEnd] = pre[perStart];
+        half = (perEnd - perStart) / 2;
+        /**
+         * 左子树
+         * 在先序遍历起始位置就是原本的起始位置值+1，终止位置就是起始位置+子树的长度（即原树的二分之一）
+         * 在后序遍历的位置因为只在后面添加了值，所以起始位置不变，终止位置就是原树分一半再减去一（下标从0开始）
+         */
+        PreToPost(pre, perStart + 1, perStart + half, post, postStart, postStart + half - 1);
+        /**
+         * 右子树
+         * 在先序遍历的起始位置就是左子树结束位置的下一个，终止位置就是原树的终止位置（每次只处理第一个节点）
+         * 在后序遍历的起始位置就是左子树结束位置的下一个，终止位置就是原树的最后的位置-1（在后面添加了值）
+         */
+        PreToPost(pre, perStart + half + 1, perEnd, post, postStart + half, postEnd - 1);
+    }
+}
+
+/**
+ * @调用部分
  * @param queue
- * @return tQueue<BitTree>
+ * @return
  */
 tQueue<BitTree> exercises15(tQueue<BitTree> queue) {
     int length = size(queue);
-    BitTree pre[length];
-    BitTree post[length];
-    int n = log2(length + 1);             //求层数，log2() 为 c语言 标准库 math.h 的函数
+    int pre[length];
+    int post[length];
     for (int i = 0; i < size(queue); i++) {          //转换队列为数组，方便读取
         BitTree node = pop(queue);
         push(queue, node);
-        pre[i] = node;
+        pre[i] = node->data;
     }
-    for (int i = 0; i < n; i++) {
-        int half = length / pow(2, i);
-        for (int j = 0; j < i + 1; i++) {
-            int start = i + j * half;
-            int end = start + half - 1;
-            int startP = i + j * half - 1;
-            int endP = startP + half - 1;
-            if (i == n - 1) {
-                post[startP] = pre[start];
-                post[endP] = pre[end];
-                continue;
-            }
-            post[endP] = pre[start];
-        }
-    }
-    tQueue<BitTree> q = tCreateQueue<BitTree>();
+    PreToPost(pre, 0, length - 1, post, 0, length - 1);
+    tQueue<BitTree> q = tCreateQueue<BitTree>();        //转换为标准队列
     for (int i = 0; i < length; i++) {
-        push(q, post[i]);
+        push(q, CreateNode(post[i]));
     }
     return q;
 }
@@ -581,5 +596,6 @@ tQueue<BitTree> exercises15(tQueue<BitTree> queue) {
 void run15() {
     BitTree root = CreateFullTree(15);
     tQueue<BitTree> queue = exercises15(PreOrder(root));
+    visitQueue(PostOrder(root));
     visitQueue(queue);
 }

@@ -1,4 +1,3 @@
-//#include "tools.cpp"
 #include "chapter5/exercises_5_3.cpp"
 
 /**
@@ -6,7 +5,7 @@
  * 请将运行时代码填入此方法
  */
 void runCode() {
-    run7();
+    run15();
 }
 
 int main() {
