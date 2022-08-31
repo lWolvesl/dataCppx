@@ -133,7 +133,7 @@ BitTree CreateRandomTree(int maxNode) {
 }
 
 /**
- * 创建一棵总节点数为maxNode的完全二叉树,节点值100内不重复
+ * 创建一棵总节点数为maxNode的完全二叉树,节点值100内不重复，当节点树为 2^n - 1 个时为满二叉树
  * @原理：创建节点后入队，然后出队再左右节点，依次循环，类似创建一个层序遍历。
  * @param maxNode
  * @return
@@ -303,9 +303,9 @@ tQueue<BitTree> InOrder(BitTree root) {
 
 /**
  * @brief 递归式二叉树后序遍历核心部分
- * 
- * @param node 
- * @param queue 
+ *
+ * @param node
+ * @param queue
  */
 void PostOrder_rf(BitTree node, tQueue<BitTree> &queue) {
     if (node != NULL) {
@@ -317,9 +317,9 @@ void PostOrder_rf(BitTree node, tQueue<BitTree> &queue) {
 
 /**
  * @brief 递归式二叉树后序遍历
- * 
- * @param root 
- * @return tQueue<BitTree> 
+ *
+ * @param root
+ * @return tQueue<BitTree>
  */
 tQueue<BitTree> PostOrder_r(BitTree root) {
     tQueue<BitTree> queue = tCreateQueue<BitTree>();
@@ -339,8 +339,8 @@ tQueue<BitTree> PostOrder_r(BitTree root) {
  *          节点时不能将其出栈，若直接判断左右是否为空将会陷入死循环，因此创建一个标记保存他，当节
  *          点出栈时，将此节点标记。当从栈顶读到的的节点的右孩子值为此节点时，表示左右均已遍历或为
  *          空即出中节点。并将节点置，这样下次遍历就会读栈顶。
- * @param root 
- * @return tQueue<BitTree> 
+ * @param root
+ * @return tQueue<BitTree>
  */
 tQueue<BitTree> PostOrder(BitTree root) {
     tQueue<BitTree> queue = tCreateQueue<BitTree>();
@@ -367,3 +367,42 @@ tQueue<BitTree> PostOrder(BitTree root) {
     return queue;
 }
 
+/**
+ * @brief 释放树
+ * @思路 释放树要释放完全，不能留下未引用节点造成内存泄漏，此算法采用层次遍历入栈，再依次出栈free
+ * @param tree
+ */
+void freeTree(BitTree tree) {
+    tQueue<BitTree> queue = tCreateQueue<BitTree>();
+    tStack<BitTree> stack = tCreateStack<BitTree>();
+    push(queue, tree);
+    BitTree node;
+    while (!empty(queue)) {
+        node = pop(queue);
+        push(stack, node);
+        if (node->LNode != NULL) {
+            push(queue, node->LNode);
+        }
+        if (node->RNode != NULL) {
+            push(queue, node->RNode);
+        }
+    }
+    while (!empty(stack)) {
+        free(pop(stack));
+    }
+}
+
+/**
+ * @brief 寻找对于层次遍历中第i个节点
+ *
+ * @param index
+ * @return BitTree
+ */
+BitTree findNode(BitTree root, int index) {
+    auto queue = LevelOrder(root);
+    BitTree p = root;
+    for (int i = 0; i < index; i++) {
+        p = pop(queue);
+    }
+    return p;
+}
