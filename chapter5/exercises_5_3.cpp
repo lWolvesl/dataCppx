@@ -593,9 +593,172 @@ tQueue<BitTree> exercises15(tQueue<BitTree> queue) {
     return q;
 }
 
+// 测试第十五题
 void run15() {
     BitTree root = CreateFullTree(15);
     tQueue<BitTree> queue = exercises15(PreOrder(root));
     visitQueue(PostOrder(root));
     visitQueue(queue);
+}
+
+/**
+ * 16.使用叶节点从左到右创建链表，由于是从左到右，即前/中/后序遍历均可，只需要在
+ * 将前一个节点保存（第一个节点就是head）,然后在遍历时的入队操作改为判断是否为叶
+ * 子节点，若是则与前一个节点链接（即双向链表链接），最后将第一个节点（head）设置
+ * 其前为空，最后一个节点后节点设置为空，再返回head，此head即为最后节点。
+ * @param head
+ * @return
+ */
+BitTree exercises16(BitTree head) {
+    BitTree list = head;
+    BitTree node;
+    tQueue<BitTree> queue = InOrder(head);
+    while (!empty(queue)) {
+        node = pop(queue);
+        if (node->LNode == NULL && node->RNode == NULL) {
+            node->LNode = list;
+            list->RNode = node;
+            list = node;
+        }
+    }
+    list->RNode = NULL;
+    head->LNode = NULL;
+    return head;
+}
+
+//测试函数
+void tPrint16(BitTree head) {
+    BitTree node = head;
+    tPrintTimeInfo();
+    while (node != NULL) {
+        tPrint(node->data);
+        tPrint(" ");
+        node = node->RNode;
+    }
+    tEnter();
+}
+
+// 测试16题
+void run16() {
+    BitTree root = CreateFullTree(10);
+    visitQueue(LevelOrder(root));
+    tPrint16(exercises16(root));
+}
+
+/**
+ * 17.此相似最后效果为两树是否具有相同的结构，判断结构是否相似即可
+ *  1.使用递归将很轻易实现，思路为判断当前节点是否同时为空，若是，
+ *  则返回1，若不是都为空（一个为空一个不是）则返回0，若有子节点，
+ *  则递归子节点做同样的操作，最后返回一个并值（&）
+ *  2.不使用递归，即使用遍历手法，即使用前/中/后序遍历方法，当转向
+ *  时判断另一棵树是否转向，若转向一旦出现不同，则两树不相似。提示
+ *  判断两树是否有相同的转向方式，可以使用标记值，每次循环重制即可。
+ *  此处使用非递归中序遍历，递归方案在书上有详解
+ * @return
+ */
+// 17题辅助函数，中序遍历返回转向表
+int *help17(BitTree root) {
+    tQueue<BitTree> queue = tCreateQueue<BitTree>();
+    tStack<BitTree> stack = tCreateStack<BitTree>();
+    BitTree node = root;
+    int index = 0;
+    int *ret = (int *) malloc(sizeof(int) * getSize(root) * 3); //此处放置一个长度为3倍树节点的数组，放置溢出
+    while (node != NULL || !empty(stack)) {
+        if (node != NULL) {
+            push(stack, node);
+            node = node->LNode;
+            ret[index++] = 1;//向左即为1
+        } else {
+            node = pop(stack);
+            push(queue, node);
+            node = node->RNode;
+            ret[index++] = 2;//向右即为2
+        }
+    }
+    return ret;
+}
+
+int exercises17(BitTree tree1, BitTree tree2) {
+    if (getSize(tree1) != getSize(tree2)) {  //先判断节点数是否相同，若不相同则一定不相似
+        return 0;
+    }
+    int *itree1 = help17(tree1);
+    int *itree2 = help17(tree2);
+    for (int i = 0; i < getSize(tree1); ++i) {
+        if (itree1[i] != itree2[i]) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+//测试第17题
+void run17() {
+    BitTree tree1 = CreateFullTree(10);
+    BitTree tree2 = CreateRandomTree(10);
+    tLog(exercises17(tree1, tree2));
+}
+
+// 18题未实现线索二叉树，历年真题未考察，不做实现
+
+/**
+ * 19. 2014统考真题 求树带权路径之和
+ *
+ * 注：链表树节点data即为题意中的weight
+ *
+ * @details 思路基本相同，节点权重乘节点深度然后求和，在第12题时求解过单个节点
+ *  的祖先节点队列，因此其返回的队列的长度-1就是其深度
+ *
+ * 注：大量使用前方法，需整合
+ * @param root
+ * @return int 带权路径只和
+ */
+int exercises19(BitTree root) {
+    tQueue<BitTree> queue = LevelOrder(root);                               //获取各个节点
+    BitTree node;
+    int weight = 0;
+    while (!empty(queue)) {
+        node = pop(queue);
+        weight += node->data * (exercise12(root, node->data).size - 1);  //获取深度再乘权重再求和
+    }
+    return weight;
+}
+
+void run19() {
+    BitTree root = CreateFullTree(10);
+    tLog(exercises19(root));
+}
+
+//20题所用结构体
+typedef struct node20 {
+    char data[10];
+    struct node20 *left, *right;
+} BTree;
+
+/**
+ * 20题 2017年统考真题
+ *
+ * 算法即中序遍历，但是需要处理，每棵子树下的节点需要扩号以确保正确性。
+ * 此题使用递归相对方便，只需在外部前加入左括号，后部加入右括号，即可保证
+ * 算式正确性
+ *
+ * @param root
+ * @return
+ */
+void exercises20(BTree *root, int deep){
+    if (root == NULL){
+        return;
+    } else if(root->left==NULL&&root->right==NULL){
+        tPrint(root->data);
+    } else{
+        if (deep>1){
+            tPrint("(");
+        }
+        exercises20(root->left,deep+1);
+        tPrint(root->data);
+        exercises20(root->right,deep+1);
+        if (deep>1){
+            tPrint(")");
+        }
+    }
 }

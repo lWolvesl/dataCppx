@@ -10,6 +10,9 @@
 #include "string.h"
 #include "stdbool.h"
 #include "math.h"
+#include "iostream"
+
+using namespace std;
 
 /**
  * @brief 定义编译运行环境
@@ -138,6 +141,16 @@ void tPrintTime() {
  */
 void tPrint(const char *text) {
     printf("%s", text);
+}
+
+/**
+ * 不换行快速打印 泛型 值
+ * @重载方法
+ * @param text
+ */
+template<class T>
+void tPrint(T text) {
+    cout << text;
 }
 
 /**
@@ -456,6 +469,23 @@ struct tDNode {
     tDNode *next;
     tDNode *prior;
 };
+
+/**
+ * 打印双端队列
+ * @tparam T
+ * @param head 头节点
+ */
+template<class T>
+void tPrintDNode(tDNode<T> head) {
+    tDNode<T> node = head;
+    tPrintTimeInfo();
+    while (node != NULL) {
+        tPrint(node.value);
+        tPrint(" ");
+        node = node.next;
+    }
+    tEnter();
+}
 
 /**
  * 双向链表实现的队列

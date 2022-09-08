@@ -406,3 +406,13 @@ BitTree findNode(BitTree root, int index) {
     }
     return p;
 }
+
+/**
+ * 获取树总节点数
+ * @param root
+ * @return
+ */
+int getSize(BitTree root){
+    tQueue<BitTree> queue = LevelOrder(root);
+    return queue.size;
+}
