@@ -1,7 +1,7 @@
 # DataCpp
 
 - 算法从思想到实现不能急于求成，需要时间沉淀，需要不断练习
-- 关于本人的更多项目请访问```github```主页```https://github.com/lWolvesl?tab=repositories```
+- 关于本人的更多项目请访问主页 <a href="https://github.com/lWolvesl?tab=repositories">github</a>
 
 #### 章节对应王道408数据结构册
 
@@ -13,8 +13,7 @@
 
 - 项目为cmake项目，需要本地或服务器提供cmake支持
 - cmake文件即为根目录下的 ```CMakeLists.txt```文件
-- 若需要 ```wolves```提供运行环境支持，请联系我并查看
-- ```https://www.gitlab.wolves.top:46080/demoHub/readme```
+- 若需要 ```wolves```提供运行环境支持，请联系我并查看 <a href="https://www.gitlab.wolves.top:46080/demoHub/readme">Introduction</a>
 
 ## 克隆项目(以下均可)
 
