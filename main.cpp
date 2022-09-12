@@ -5,7 +5,7 @@
  * 请将运行时代码填入此方法
  */
 void runCode() {
-    run9();
+    run12();
 }
 
 int main() {

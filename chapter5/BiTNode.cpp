@@ -467,3 +467,11 @@ BitTree CreateAVLTree(int maxNode) {
     }
     return root;
 }
+
+int getDepth(BitTree node) {                               //获取节点深度
+    if (node == NULL)
+        return 0;
+    int Left_Depth = getDepth(node->LNode);
+    int Right_Depth = getDepth(node->RNode);
+    return Left_Depth > Right_Depth ? Left_Depth + 1 : Right_Depth + 1;
+}
