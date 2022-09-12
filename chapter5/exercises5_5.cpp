@@ -3,7 +3,6 @@
 //
 
 #include "BiTNode.cpp"
-#include "../tools.cpp"
 
 /**
  * @details
@@ -218,6 +217,7 @@ result12* exercises12(int n, int k) {
     return &result;
 }
 
+//测试第十二题
 void run12() {
     result12* result = exercises12(10, 4);
     tLog(result->data);

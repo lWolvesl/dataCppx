@@ -769,6 +769,7 @@ T tPeek_back(tDeque<T> &deque) {
 
 /**
  * 从数组中找第一个相同的元素
+ * 标准的时间复杂度为 n 的查找算法
  * @支持泛型
  * @tparam T 数组类型
  * @param arr 数组
