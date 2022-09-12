@@ -1,7 +1,7 @@
 # DataCpp
 
 - 算法从思想到实现不能急于求成，需要时间沉淀，需要不断练习
-- 关于本人的更多项目请访问主页 <a href="https://github.com/lWolvesl">github</a>
+- 关于本人的更多项目请访问主页 <a href="https://github.com/lWolvesl">Github/lWolvesl</a>
 
 #### 章节对应王道408数据结构册
 
