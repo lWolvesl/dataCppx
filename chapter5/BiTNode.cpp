@@ -96,11 +96,15 @@ BitTree CreateNode(int data, TreeNode &lNode, TreeNode &rNode) {
 }
 
 /**
+ * 此函数非考试需要，仅方便测试代码
  * 创建一棵节点总数为maxNode的随机树（全随机）
  * @param maxNode
  * @return
  */
 BitTree CreateRandomTree(int maxNode) {
+    if (maxNode == 0) {
+        return BitTree{};
+    }
     tLog("创建树");
     BitTree root = CreateNode(tRandom100());
     BitTree node = root;
@@ -133,12 +137,16 @@ BitTree CreateRandomTree(int maxNode) {
 }
 
 /**
+ * 此函数非考试需要，仅方便测试代码
  * 创建一棵总节点数为maxNode的完全二叉树,节点值100内不重复，当节点树为 2^n - 1 个时为满二叉树
  * @原理：创建节点后入队，然后出队再左右节点，依次循环，类似创建一个层序遍历。
  * @param maxNode
  * @return
  */
 BitTree CreateFullTree(int maxNode) {
+    if (maxNode == 0) {
+        return BitTree{};
+    }
     tLog("创建树");
     BitTree root = CreateNode(tRandomNoSame());
     tLog(tStrCat(2, "节点 1 ", tIntToString(root->data)));
@@ -412,7 +420,50 @@ BitTree findNode(BitTree root, int index) {
  * @param root
  * @return
  */
-int getSize(BitTree root){
+int getSize(BitTree root) {
     tQueue<BitTree> queue = LevelOrder(root);
     return queue.size;
+}
+
+/**
+ * 此函数非考试需要，仅方便测试代码
+ * 创建一棵二叉排序树
+ * @param maxNode
+ * @return
+ */
+BitTree CreateAVLTree(int maxNode) {
+    if (maxNode == 0) {
+        return BitTree{};
+    }
+    tLog("创建二叉排序树,以下输出为如树顺序");
+    BitTree root = CreateNode(tRandomNoSame());
+    tLog(root->data);
+    BitTree node;
+    while (maxNode) {
+        node = root;
+        BitTree temp = CreateNode(tRandomNoSame());
+        tLog(temp->data);
+        while (true) {
+            if (temp->data == node->data) {
+                break;
+            }
+            if (temp->data < node->data) {
+                if (node->LNode == NULL) {
+                    node->LNode = temp;
+                    maxNode--;
+                    break;
+                }
+                node = node->LNode;
+            }
+            if (temp->data > node->data) {
+                if (node->RNode == NULL) {
+                    node->RNode = temp;
+                    maxNode--;
+                    break;
+                }
+                node = node->RNode;
+            }
+        }
+    }
+    return root;
 }

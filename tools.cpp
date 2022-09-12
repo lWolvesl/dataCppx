@@ -1,7 +1,7 @@
 //
 // Created by wolves on 2022/7/19.
 //
-#pragma once //确保只会引用一次
+#pragma once //确保此作为头文件对时候只会引用一次
 
 #include "stdarg.h"
 #include "stdio.h"

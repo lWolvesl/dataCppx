@@ -1,11 +1,11 @@
-#include "chapter5/exercises_5_3.cpp"
+#include "chapter5/exercises5_5.cpp"
 
 /**
  * 为规范输出
  * 请将运行时代码填入此方法
  */
 void runCode() {
-    run19();
+    run9();
 }
 
 int main() {
