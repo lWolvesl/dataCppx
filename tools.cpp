@@ -158,7 +158,23 @@ void tPrint(T text) {
  */
 void tPrintInfo() {
     if (RUN_ENV == 1) {
-        printf("\033[34minfo \033[0m");
+        printf("\033[34minfo      \033[0m");
+    } else if (RUN_ENV == 2) {
+        printf("info ");
+    }
+}
+
+void tPrintWarn() {
+    if (RUN_ENV == 1) {
+        printf("\033[1;33mwarning   \033[0m");
+    } else if (RUN_ENV == 2) {
+        printf("info ");
+    }
+}
+
+void tPrintWrong() {
+    if (RUN_ENV == 1) {
+        printf("\033[0;32;31mwrong     \033[0m");
     } else if (RUN_ENV == 2) {
         printf("info ");
     }
@@ -170,6 +186,16 @@ void tPrintInfo() {
 void tPrintTimeInfo() {
     tPrintTime();
     tPrintInfo();
+}
+
+void tPrintTimeWarn() {
+    tPrintTime();
+    tPrintWarn();
+}
+
+void tPrintTimeWrong() {
+    tPrintTime();
+    tPrintWrong();
 }
 
 /**
@@ -216,6 +242,16 @@ void tPrintln(char text) {
  */
 void tLog(const char *text) {
     tPrintTimeInfo();
+    tPrintln(text);
+}
+
+void tWarn(const char *text) {
+    tPrintTimeWarn();
+    tPrintln(text);
+}
+
+void tWrong(const char *text) {
+    tPrintTimeWrong();
     tPrintln(text);
 }
 
@@ -320,7 +356,7 @@ int tRandom100() {
  * @return 随机数
  */
 int tRandom(int start, int end) {
-    return getRands() % (end - start + 1) + start;
+    return (getRands()) % (end - start + 1) + start;
 }
 
 int tRandomNoSame() {
