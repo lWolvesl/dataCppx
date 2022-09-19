@@ -1,4 +1,4 @@
-#include "chapter6/MGraph.cpp"
+#include "chapter6/ALGraph.cpp"
 #include "./tools.cpp"
 
 /**
@@ -6,7 +6,7 @@
  * 请将运行时代码填入此方法
  */
 void runCode() {
-    test();
+
 }
 
 int main() {

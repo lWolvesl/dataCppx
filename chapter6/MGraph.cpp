@@ -4,7 +4,7 @@
 
 #include "../tools.cpp"
 
-// 最大节点数
+// 最大顶点数
 #define MaxVertexNum 100
 
 /**
@@ -28,9 +28,9 @@ class MGraph {
         bool isDeleted;                     //逻辑删除位置
     };
 public:
-    data Vex[MaxVertexNum];                  // 顶点表
-    int Edge[MaxVertexNum][MaxVertexNum];   // 边表
-    int vexnum, arcnum;                     // 图当前含有的定点数和弧数
+    data Vex[MaxVertexNum]{};                  // 顶点表
+    int Edge[MaxVertexNum][MaxVertexNum]{};   // 边表
+    int vexnum{}, arcnum{};                     // 图当前含有的定点数和弧数
     int directed;       // 该图是否有向
 
     MGraph() {
@@ -38,8 +38,8 @@ public:
     }
 
     /**
-    * 创建一个含有 num 个节点的随机图
-    * @param num 节点总数
+    * 创建一个含有 num 个顶点的随机图
+    * @param num 顶点总数
     * @param directed 是否有向
     */
     MGraph(int num, bool isDirected) {
@@ -47,11 +47,11 @@ public:
         directed = isDirected;
         if (directed) {
             if (num > MaxVertexNum) {
-                tWarn("所需节点总数超过100，自动重设为100");
+                tWarn("所需顶点总数超过100，自动重设为100");
                 vexnum = 100;
             }
             tPrintTimeInfo();
-            cout << "节点列表 ";
+            cout << "顶点列表 ";
             for (int i = 0; i < num;) {
                 if (InsertVertex(tRandomNoSame())) {
                     cout << Vex[i].data << " ";
@@ -60,31 +60,31 @@ public:
             }
             tEnter();
 
-            arcnum = tRandom(0, num * (num - 1));
+            int total = tRandom(0, num * (num - 1));
 
-            for (int i = 0; i < arcnum;) {
+            for (int i = 0; i < total;) {
                 int x = tRandomNoSame() % num;
                 int y = tRandomNoSame() % num;
                 if (AddEdge(Vex[x].data, Vex[y].data)) {
                     tPrintTimeInfo();
-                    cout << "节点 " << Vex[x].data << (Vex[x].data < 10 ? " " : "") << " 指向节点 " << Vex[y].data
+                    cout << "顶点 " << Vex[x].data << (Vex[x].data < 10 ? " " : "") << " 指向顶点 " << Vex[y].data
                          << (Vex[y].data < 10 ? " " : "") << " 相连" << endl;
                     ++i;
                 }
             }
 
             tPrintTimeInfo();
-            cout << "共有 " << vexnum << (vexnum < 10 ? " " : "") << " 节点以及 " << arcnum << (arcnum < 10 ? " " : "")
+            cout << "共有 " << vexnum << (vexnum < 10 ? " " : "") << " 顶点以及 " << arcnum << (arcnum < 10 ? " " : "")
                  << " 条弧" << endl;
 
         } else {
             if (num > MaxVertexNum) {
-                tWarn("所需节点总数超过100，自动重设为100");
+                tWarn("所需顶点总数超过100，自动重设为100");
                 vexnum = 100;
             }
 
             tPrintTimeInfo();
-            cout << "节点列表 ";
+            cout << "顶点列表 ";
             for (int i = 0; i < num;) {
                 if (InsertVertex(tRandomNoSame())) {
                     cout << Vex[i].data << " ";
@@ -93,21 +93,21 @@ public:
             }
             tEnter();
 
-            arcnum = tRandom(0, num * (num - 1) / 2);
+            int total = tRandom(0, num * (num - 1) / 2);
 
-            for (int i = 0; i < arcnum;) {
+            for (int i = 0; i < total;) {
                 int x = tRandomNoSame() % num;
                 int y = tRandomNoSame() % num;
                 if (AddEdge(Vex[x].data, Vex[y].data)) {
                     tPrintTimeInfo();
-                    cout << "节点 " << Vex[x].data << (Vex[x].data < 10 ? " " : "") << " 与节点 " << Vex[y].data
+                    cout << "顶点 " << Vex[x].data << (Vex[x].data < 10 ? " " : "") << " 与顶点 " << Vex[y].data
                          << (Vex[y].data < 10 ? " " : "") << " 相连" << endl;
                     ++i;
                 }
             }
 
             tPrintTimeInfo();
-            cout << "共有 " << vexnum << (vexnum < 10 ? " " : "") << " 节点以及 " << arcnum << (arcnum < 10 ? " " : "")
+            cout << "共有 " << vexnum << (vexnum < 10 ? " " : "") << " 顶点以及 " << arcnum << (arcnum < 10 ? " " : "")
                  << " 条弧" << endl;
         }
         tPrintTimeInfo();
@@ -116,13 +116,13 @@ public:
 
     /**
      * 手动定义一个已知图，方便测试
-     * 2022/09/18 23:59:39 info      节点列表 0 60 95 84 65
-     * 2022/09/18 23:59:39 info      节点 65 与节点 60 相连
-     * 2022/09/18 23:59:39 info      节点 65 与节点 0  相连
-     * 2022/09/18 23:59:39 info      节点 0  与节点 60 相连
-     * 2022/09/18 23:59:39 info      节点 84 与节点 60 相连
-     * 2022/09/18 23:59:39 info      节点 95 与节点 60 相连
-     * 2022/09/18 23:59:39 info      共有 5  节点以及 5  条弧
+     * 2022/09/18 23:59:39 info      顶点列表 0 60 95 84 65
+     * 2022/09/18 23:59:39 info      顶点 65 与顶点 60 相连
+     * 2022/09/18 23:59:39 info      顶点 65 与顶点 0  相连
+     * 2022/09/18 23:59:39 info      顶点 0  与顶点 60 相连
+     * 2022/09/18 23:59:39 info      顶点 84 与顶点 60 相连
+     * 2022/09/18 23:59:39 info      顶点 95 与顶点 60 相连
+     * 2022/09/18 23:59:39 info      共有 5  顶点以及 5  条弧
      * 2022/09/18 23:59:39 info      该图为无向图
      */
     void CreateByHandF() {
@@ -139,11 +139,11 @@ public:
     }
 
     /**
-     * 获取节点 x 在邻接矩阵中的索引
+     * 获取顶点 x 在邻接矩阵中的索引
      * @param x
      * @return
      */
-    int index(int x) {
+    int indexM(int x) {
         for (int i = 0; i < vexnum; ++i) {
             if (x == Vex[i].data && !Vex[i].isDeleted) {
                 return i;
@@ -159,14 +159,14 @@ public:
      * @return
      */
     bool Adjacent(int x, int y) {
-        int m = index(x);
-        int n = index(y);
+        int m = indexM(x);
+        int n = indexM(y);
         return Edge[m][n];
     }
 
     /**
      * 辅助函数,主要方法
-     * 列举出节点 x 的邻接的边
+     * 列举出顶点 x 的邻接的边
      * @param x
      */
     tQueue<data> Neighbors_help(int x) {
@@ -180,18 +180,18 @@ public:
     }
 
     /**
-     * 列举出节点 x 的邻接的边
+     * 列举出顶点 x 的邻接的边
      * @param x
      */
     void Neighbors(int x) {
-        int i = index(x);
+        int i = indexM(x);
         if (i == -1) {
-            tWrong("节点不存在,检索失败");
+            tWrong("顶点不存在,检索失败");
             return;
         }
         auto queue = Neighbors_help(i);
         tPrintTimeInfo();
-        cout << "节点" << x << "邻接的边为 ";
+        cout << "顶点" << x << "邻接的边为 ";
         while (!empty(queue)) {
             cout << pop(queue).data << " ";
         }
@@ -199,18 +199,18 @@ public:
     }
 
     /**
-     * 向图中插入节点 x , 即直接向节点表中增加一个节点，然后对总节点数+1即可，注意不能超过最大节点
+     * 向图中插入顶点 x , 即直接向顶点表中增加一个顶点，然后对总顶点数+1即可，注意不能超过最大顶点
      * @param x
      * @return
      */
     bool InsertVertex(int x) {
         if (vexnum + 1 > MaxVertexNum) {
-            tWrong("图中节点已满,插入失败");
+            tWrong("图中顶点已满,插入失败");
             return false;
         }
 
-        if (index(x) != -1) {
-            tWarn("节点已存在，插入失败");
+        if (indexM(x) != -1) {
+            tWarn("顶点已存在，插入失败");
             return false;
         }
 
@@ -225,9 +225,9 @@ public:
      * @return
      */
     bool DeleteVertexLogic(int x) {
-        int i = index(x);
-        if (index(x) == -1) {
-            tWrong("节点不存在，删除失败");
+        int i = indexM(x);
+        if (indexM(x) == -1) {
+            tWrong("顶点不存在，删除失败");
             return false;
         }
         Vex[i].isDeleted = true;
@@ -241,9 +241,9 @@ public:
      * @return
      */
     bool DeleteVertex(int x) {
-        int i = index(x);
-        if (index(x) == -1) {
-            tWrong("节点不存在，删除节点失败");
+        int i = indexM(x);
+        if (indexM(x) == -1) {
+            tWrong("顶点不存在，删除顶点失败");
             return false;
         }
         // 平移数组值
@@ -254,7 +254,8 @@ public:
                 Edge[j][k] = Edge[j + 1][k];            // 纵向移动edge数组
             }
         }
-        tLog("删除节点成功");
+        arcnum--;
+        tLog("删除顶点成功");
         return true;
     }
 
@@ -265,13 +266,13 @@ public:
      * @return
      */
     bool AddEdge(int x, int y) {
-        int m = index(x);
-        int n = index(y);
+        int m = indexM(x);
+        int n = indexM(y);
         if (x == y) {
             return false;
         }
         if (m == -1 || n == -1) {
-            tWrong("节点不存在，添加弧失败");
+            tWrong("顶点不存在，添加弧失败");
             return false;
         }
         if (Edge[m][n]) {
@@ -282,6 +283,7 @@ public:
             Edge[n][m] = 1;
         }
         Edge[m][n] = 1;
+        arcnum++;
         return true;
     }
 
@@ -292,10 +294,10 @@ public:
      * @return
      */
     bool RemoveEdge(int x, int y) {
-        int m = index(x);
-        int n = index(y);
+        int m = indexM(x);
+        int n = indexM(y);
         if (m == -1 || n == -1) {
-            tWrong("节点不存在，删除弧失败");
+            tWrong("顶点不存在，删除弧失败");
             return false;
         }
         if (Edge[m][n] == 0) {
@@ -306,19 +308,20 @@ public:
             Edge[n][m] = 0;
         }
         Edge[m][n] = 0;
+        arcnum--;
         tLog("删除弧成功");
         return true;
     }
 
     /**
-     * 获取节点x的第一个邻接点，若有则返回定点号，若无则返回-1
+     * 获取顶点x的第一个邻接点，若有则返回定点号，若无则返回-1
      * @param x
      * @return
      */
     int FirstNeighbor(int x) {
-        int m = index(x);
+        int m = indexM(x);
         if (m == -1) {
-            tWrong("节点不存在，检索失败");
+            tWrong("顶点不存在，检索失败");
             return 0;
         }
         for (int n = 0; n < vexnum; ++n) {
@@ -337,12 +340,12 @@ public:
      * @return
      */
     int NextNeighbor(int x, int y) {
-        int m = index(x);
-        if (m == -1 && index(y) == -1) {
-            tWrong("节点不存在，检索失败");
+        int m = indexM(x);
+        if (m == -1 && indexM(y) == -1) {
+            tWrong("顶点不存在，检索失败");
             return 0;
         }
-        for (int n = index(y) + 1; n < vexnum; ++n) {
+        for (int n = indexM(y) + 1; n < vexnum; ++n) {
             int i = Edge[m][n];
             if (i != 0) {
                 return Vex[n].data;
@@ -358,10 +361,10 @@ public:
      * @return
      */
     int Get_edge_value(int x, int y) {
-        int m = index(x);
-        int n = index(y);
+        int m = indexM(x);
+        int n = indexM(y);
         if (m == -1 || n == -1) {
-            tWrong("节点不存在，检索失败");
+            tWrong("顶点不存在，检索失败");
             return 0;
         }
         return Edge[m][n];
@@ -375,11 +378,14 @@ public:
      * @return
      */
     bool Set_edge_value(int x, int y, int v) {
-        int m = index(x);
-        int n = index(y);
+        int m = indexM(x);
+        int n = indexM(y);
         if (m == -1 || n == -1) {
-            tWrong("节点不存在，检索失败");
+            tWrong("顶点不存在，检索失败");
             return false;
+        }
+        if (!directed) {
+            Edge[n][m] = v;
         }
         Edge[m][n] = v;
         return true;
@@ -397,7 +403,7 @@ void test() {
     cout << graph.Adjacent(0, 60) << endl;
     graph.DeleteVertex(84);
     tPrintTimeInfo();
-    cout << graph.index(84) << endl;
+    cout << graph.indexM(84) << endl;
     tPrintTimeInfo();
     cout << graph.FirstNeighbor(0) << endl;
     tPrintTimeInfo();
