@@ -2,6 +2,7 @@
 // Created by wolves on 2022/9/18.
 // 图的邻接表表示法
 //
+#pragma once //确保此作为头文件对时候只会引用一次
 
 #include "../tools.cpp"
 

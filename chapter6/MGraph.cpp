@@ -2,6 +2,8 @@
 // Created by wolves on 2022/9/18.
 //
 
+#pragma once //确保此作为头文件对时候只会引用一次
+
 #include "../tools.cpp"
 
 // 最大顶点数
