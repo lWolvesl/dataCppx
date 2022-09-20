@@ -56,11 +56,15 @@ bool Adjacent(ALGraph G, int x, int y) {
     }
     ArcNode *node = G.vertices[m].first;
     int value = G.vertices[n].data;
-    while (node && node->next) {
+    while (node) {
         if (node->adjvex == value) {
             return true;
         }
-        node = node->next;
+        if (node->next) {
+            node = node->next;
+        } else {
+            break;
+        }
     }
     return false;
 }
@@ -77,7 +81,7 @@ ArcNode *NeighborsList(ALGraph G, int x) {
         tWrong("顶点不存在");
     }
     assert(m != -1);                                  // 此处使用断言终止程序
-    return G.vertices[m].first->next;
+    return G.vertices[m].first;
 }
 
 /**
@@ -89,7 +93,7 @@ void Neighbors(ALGraph G, int x) {
     ArcNode *node = NeighborsList(G, x);
     tPrintTimeInfo();
     cout << "与顶点 " << x << " 邻接的有";
-    while (node != nullptr) {
+    while (node != NULL) {
         cout << node->adjvex << " ";
         node = node->next;
     }
@@ -110,10 +114,15 @@ bool AddEdge(ALGraph &G, int x, int y) {
         tWrong("顶点不存在");
         return false;
     }
-    ArcNode temp{y, 0, nullptr};
+    if (m == n) {
+        tWarn("出现自环");
+    }
+    ArcNode *temp = (ArcNode *) malloc(sizeof(ArcNode));
+    temp->adjvex = y;
+    temp->next = NULL;
     ArcNode *node = G.vertices[m].first;
     if (!node) {
-        G.vertices[m].first = &temp;
+        G.vertices[m].first = temp;
     } else {
         while (node) {
             if (node->adjvex == y) {
@@ -126,29 +135,27 @@ bool AddEdge(ALGraph &G, int x, int y) {
                 break;
             }
         }
-        node->next = &temp;
+        node->next = temp;
     }
     G.arcnum++;
 
     // 此处判断是否是无向图，若是无向图，则需要将另一个顶点的邻接表也设置一下
     if (!G.directed) {
-        ArcNode tempY{x, 0, nullptr};
+        ArcNode *tempY = (ArcNode *) malloc(sizeof(ArcNode));
+        tempY->adjvex = x;
+        tempY->next = NULL;
         ArcNode *nodeY = G.vertices[n].first;
         if (!nodeY) {
-            G.vertices[n].first = &tempY;
+            G.vertices[n].first = tempY;
         } else {
             while (nodeY) {
-                if (nodeY->adjvex == x) {
-                    tWarn("2该边已存在");
-                    return false;
-                }
                 if (nodeY->next) {
                     nodeY = nodeY->next;
                 } else {
                     break;
                 }
             }
-            nodeY->next = &tempY;
+            nodeY->next = tempY;
         }
         G.arcnum++;
     }
@@ -171,27 +178,50 @@ bool RemoveEdge(ALGraph &G, int x, int y) {
         return false;
     }
     ArcNode *node = G.vertices[m].first;
-    while (node && node->next) {
-        if (node->next->adjvex == y) {
-            node->next = node->next->next;
-            tagX = 1;
-            G.arcnum--;
-            break;
+    if (!node) {
+        return false;
+    }
+    if (node->adjvex == y) {
+        G.vertices[m].first = node->next;
+        tagX = 1;
+    } else {
+        while (node->next) {
+            if (node->next->adjvex == y) {
+                node->next = node->next->next;
+                tagX = 1;
+                G.arcnum--;
+                break;
+            }
+            if (node->next) {
+                node = node->next;
+            } else {
+                break;
+            }
         }
-        node = node->next;
     }
     if (tagX == 0) {
         return false;
     }
     if (!G.directed) {
         ArcNode *nodeY = G.vertices[n].first;
-        while (nodeY && nodeY->next) {
-            if (nodeY->next->adjvex == x) {
-                nodeY->next = nodeY->next->next;
-                G.arcnum--;
-                return true;
+        if (!nodeY) {
+            return false;
+        }
+        if (nodeY->adjvex == x) {
+            G.vertices[n].first = nodeY->next;
+        } else {
+            while (nodeY->next) {
+                if (nodeY->next->adjvex == x) {
+                    nodeY->next = nodeY->next->next;
+                    G.arcnum--;
+                    break;
+                }
+                if (nodeY->next) {
+                    nodeY = nodeY->next;
+                } else {
+                    break;
+                }
             }
-            nodeY = nodeY->next;
         }
     }
     return false;
@@ -253,8 +283,8 @@ int FirstNeighbor(ALGraph G, int x) {
         return -1;
     }
     ArcNode *node = G.vertices[m].first;
-    if (node && node->next) {
-        return node->next->adjvex;
+    if (node) {
+        return node->adjvex;
     }
     return -1;
 }
@@ -274,14 +304,13 @@ int NextNeighbor(ALGraph G, int x, int y) {
         return -1;
     }
     ArcNode *node = G.vertices[m].first;
-    ArcNode *temp;
-    while (node && node->next) {
-        if (node->next->adjvex == y) {
-            temp = node->next;
+    while (node) {
+        if (node->adjvex == y) {
+            if (node->next) {
+                return node->next->adjvex;
+            }
         }
-    }
-    if (temp && temp->next) {
-        return temp->next->adjvex;
+        node = node->next;
     }
     return -1;
 }
@@ -301,10 +330,11 @@ int Get_edge_value(ALGraph G, int x, int y) {
         return -1;
     }
     ArcNode *node = G.vertices[m].first;
-    while (node && node->next) {
-        if (node->next->adjvex == y) {
-            return node->next->power;
+    while (node) {
+        if (node->adjvex == y) {
+            return node->power;
         }
+        node = node->next;
     }
     return -1;
 }
@@ -325,19 +355,22 @@ bool Set_edge_value(ALGraph &G, int x, int y, int v) {
         return false;
     }
     ArcNode *node = G.vertices[m].first;
-    while (node && node->next) {
-        if (node->next->adjvex == y) {
-            node->next->power = v;
+    while (node) {
+        if (node->adjvex == y) {
+            node->power = v;
             if (!G.directed) {
-                ArcNode *nodeY = G.vertices[y].first;
-                while (nodeY && nodeY->next) {
-                    if (nodeY->next->adjvex == x) {
-                        nodeY->next->power = v;
+                ArcNode *nodeY = G.vertices[n].first;
+                while (nodeY) {
+                    if (nodeY->adjvex == x) {
+                        nodeY->power = v;
+                        return true;
                     }
+                    nodeY = nodeY->next;
                 }
             }
             return true;
         }
+        node = node->next;
     }
     return false;
 }
@@ -384,19 +417,68 @@ ALGraph CreateALGraph(int num, bool isDirected) {
 }
 
 /**
- * 手动创建一个图
- * 2022/09/19 23:43:18 info      插入顶点 86 5 3 38 55
-2022/09/19 23:43:18 info      顶点 5 与(指向)顶点 55 相连
-2022/09/19 23:43:18 info      顶点 38 与(指向)顶点 86 相连
-2022/09/19 23:43:18 info      顶点 55 与(指向)顶点 38 相连
-2022/09/19 23:43:18 info      顶点 55 与(指向)顶点 5 相连
-2022/09/19 23:43:18 info      共有 5 个顶点和 10 条弧
+ * 手动创建一个无向图，含有5个顶点和4条弧
+ * 2022/09/20 17:55:33 info      插入顶点 68 36 43 84 80
+ * 2022/09/20 17:55:33 info      顶点 43 与(指向)顶点 80 相连
+ * 2022/09/20 17:55:33 info      顶点 36 与(指向)顶点 84 相连
+ * 2022/09/20 17:55:33 info      顶点 43 与(指向)顶点 36 相连
+ * 2022/09/20 17:55:33 info      顶点 80 与(指向)顶点 68 相连
+ * 2022/09/20 17:55:33 info      共有 5 个顶点和 8 条弧
  * @return
  */
-ALGraph createALHand(){
+ALGraph createALHand() {
+    ALGraph G;
+    G.directed = false;
+    G.arcnum = 0;
+    G.vexnum = 0;
+    InsertVertex(G, 68);
+    InsertVertex(G, 36);
+    InsertVertex(G, 43);
+    InsertVertex(G, 84);
+    InsertVertex(G, 80);
 
+    AddEdge(G, 43, 80);
+    AddEdge(G, 36, 84);
+    AddEdge(G, 43, 36);
+    AddEdge(G, 80, 68);
+    tPrintTimeInfo();
+    cout << "共有 " << G.vexnum << " 个顶点和 " << G.arcnum << " 条弧" << endl;
+    return G;
 }
-void testAL() {
-    ALGraph G = CreateALGraph(5, false);
 
+/**
+ * 测试基础方法
+ */
+void testAL() {
+    ALGraph graph = createALHand();
+    Neighbors(graph, 36);
+    tPrintTimeInfo();
+    cout << Adjacent(graph, 36, 84) << endl;
+    tPrintTimeInfo();
+    cout << Adjacent(graph, 84, 36) << endl;
+    tPrintTimeInfo();
+    cout << Adjacent(graph, 68, 36) << endl;
+    tPrintTimeInfo();
+    cout << Adjacent(graph, 68, 80) << endl;
+    RemoveEdge(graph, 68, 80);
+    tPrintTimeInfo();
+    cout << Adjacent(graph, 68, 80) << endl;
+    tPrintTimeInfo();
+    cout << Adjacent(graph, 80, 68) << endl;
+    DeleteVertex(graph, 80);
+    tPrintTimeInfo();
+    cout << indexAL(graph, 80) << endl;
+    tPrintTimeInfo();
+    cout << FirstNeighbor(graph, 36) << endl;
+    tPrintTimeInfo();
+    cout << FirstNeighbor(graph, 68) << endl;
+    tPrintTimeInfo();
+    cout << NextNeighbor(graph, 36, 84) << endl;
+    tPrintTimeInfo();
+    cout << Get_edge_value(graph, 36, 43) << endl;
+    Set_edge_value(graph, 36, 43, 10);
+    tPrintTimeInfo();
+    cout << Get_edge_value(graph, 36, 43) << endl;
+    tPrintTimeInfo();
+    cout << Get_edge_value(graph, 43, 36) << endl;
 }

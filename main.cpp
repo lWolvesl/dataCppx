@@ -6,7 +6,7 @@
  * 请将运行时代码填入此方法
  */
 void runCode() {
-
+    testAL();
 }
 
 int main() {

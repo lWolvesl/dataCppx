@@ -392,7 +392,10 @@ public:
     }
 };
 
-void test() {
+/**
+ *
+ */
+void testM() {
     MGraph graph;
     graph.CreateByHandF();
     graph.Neighbors(60);
