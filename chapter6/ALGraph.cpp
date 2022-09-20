@@ -1,10 +1,10 @@
 //
 // Created by wolves on 2022/9/18.
+// 图的邻接表表示法
 //
 
 #include "../tools.cpp"
 
-// 图的邻接表表示法
 // 邻接表中最大顶点数为100
 #define MaxVertexNum 100
 
