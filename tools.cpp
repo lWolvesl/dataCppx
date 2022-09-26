@@ -658,6 +658,17 @@ int size(tQueue<T> &queue) {
     return queue.size;
 }
 
+template<class T>
+tQueue<T> tCpyQueue(tQueue<T> q) {
+    tDNode<T> *node = q.head;
+    tQueue<T> queue = tCreateQueue<T>();
+    while (node) {
+        push(queue, node->value);
+        node = node->next;
+    }
+    return queue;
+}
+
 /**
  * 实现多字符串拼接
  * @param quantity 传入字符串个数

@@ -329,7 +329,7 @@ public:
         for (int n = 0; n < vexnum; ++n) {
             int i = Edge[m][n];
             if (i != 0) {
-                return Vex[n].data;
+                return n;
             }
         }
         return -1;
@@ -350,7 +350,7 @@ public:
         for (int n = indexM(y) + 1; n < vexnum; ++n) {
             int i = Edge[m][n];
             if (i != 0) {
-                return Vex[n].data;
+                return n;
             }
         }
         return -1;
@@ -393,6 +393,50 @@ public:
         return true;
     }
 };
+
+/**
+ * 手动创建一个无向图，含有5个顶点和4条弧
+ *    图示 王道2023 年 P226 图 6.17  /  当前文件夹中的 IMG_6_1.jpg
+ * @return
+ */
+MGraph createMHand1() {
+    MGraph G;
+    G.directed = true;
+    G.arcnum = 0;
+    G.vexnum = 0;
+    G.InsertVertex(1);
+    G.InsertVertex(2);
+    G.InsertVertex(3);
+    G.InsertVertex(4);
+    G.InsertVertex(5);
+
+    G.AddEdge(1, 2);
+    G.AddEdge(1, 5);
+    G.AddEdge(2, 5);
+    G.AddEdge(5, 2);
+    G.AddEdge(2, 3);
+    G.AddEdge(3, 4);
+    G.AddEdge(4, 3);
+    G.AddEdge(5, 4);
+    G.AddEdge(4, 1);
+    G.AddEdge(5, 3);
+
+    // 赋权值
+    G.Set_edge_value(1, 2, 10);
+    G.Set_edge_value(1, 5, 5);
+    G.Set_edge_value(2, 5, 2);
+    G.Set_edge_value(5, 2, 3);
+    G.Set_edge_value(2, 3, 1);
+    G.Set_edge_value(3, 4, 4);
+    G.Set_edge_value(4, 3, 6);
+    G.Set_edge_value(5, 4, 2);
+    G.Set_edge_value(4, 1, 7);
+    G.Set_edge_value(5, 3, 9);
+
+    tPrintTimeInfo();
+    cout << "共有 " << G.vexnum << " 个顶点和 " << G.arcnum << " 条弧" << endl;
+    return G;
+}
 
 /**
  *

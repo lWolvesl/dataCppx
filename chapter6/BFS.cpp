@@ -54,11 +54,10 @@ void BFS_help(tQueue<int> &queue, MGraph G, int i) {
     while (!empty(q)) {
         int temp = pop(q);
         push(queue, temp);
-        for (int j = G.FirstNeighbor(temp); j >= 0; j = G.NextNeighbor(temp, j)) {
-            int index = G.indexM(j);
-            if (!visited[index]) {
-                push(q, G.Vex[index].data);
-                visited[index] = true;
+        for (int j = G.FirstNeighbor(temp); j >= 0; j = G.NextNeighbor(temp, G.Vex[j].data)) {
+            if (!visited[j]) {
+                push(q, G.Vex[j].data);
+                visited[j] = true;
             }
         }
     }
@@ -75,4 +74,24 @@ tQueue<int> BFS(MGraph G) {
         }
     }
     return queue;
+}
+
+void runBFS1() {
+    ALGraph G = createALHand1();
+    tQueue<int> queue = BFS(G);
+    while (!empty(queue)) {
+        tLog(pop(queue));
+    }
+}
+
+void runBFS2() {
+    MGraph G = createMHand1();
+    tQueue<int> queue = BFS(G);
+    while (!empty(queue)) {
+        tLog(pop(queue));
+    }
+}
+
+void runBFS() {
+    runBFS2();
 }

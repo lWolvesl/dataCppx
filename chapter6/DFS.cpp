@@ -20,10 +20,10 @@ bool visited[MaxVertexNum];
 void DFS_help(tQueue<int> &queue, ALGraph G, int i) {
     visited[i] = true;
     push(queue, G.vertices[i].data);
-    for (int j = FirstNeighbor(G, G.vertices[i].data); j >= 0; j = NextNeighbor(G, G.vertices[i].data, j)) {
-        int index = indexAL(G, j);
-        if (!visited[index]) {
-            DFS_help(queue, G, index);
+    for (int j = FirstNeighbor(G, G.vertices[i].data);
+         j >= 0; j = NextNeighbor(G, G.vertices[i].data, G.vertices[j].data)) {
+        if (!visited[j]) {
+            DFS_help(queue, G, j);
         }
     }
 }
@@ -41,13 +41,14 @@ tQueue<int> DFS(ALGraph G) {
     return queue;
 }
 
+//----------------------------------------------------------------------------------------------------------
+
 void DFS_help(tQueue<int> &queue, MGraph G, int i) {
     visited[i] = true;
     push(queue, G.Vex[i].data);
-    for (int j = G.FirstNeighbor(G.Vex[i].data); j >= 0; j = G.NextNeighbor(G.Vex[i].data, j)) {
-        int index = G.indexM(j);
-        if (!visited[index]) {
-            DFS_help(queue, G, index);
+    for (int j = G.FirstNeighbor(G.Vex[i].data); j >= 0; j = G.NextNeighbor(G.Vex[i].data, G.Vex[j].data)) {
+        if (!visited[j]) {
+            DFS_help(queue, G, j);
         }
     }
 }
@@ -63,4 +64,60 @@ tQueue<int> DFS(MGraph G) {
         }
     }
     return queue;
+}
+
+/**
+* 非递归实现
+*/
+tQueue<int> DFS_F(ALGraph graph) {
+    tQueue<int> queue = tCreateQueue<int>();    //初始化队列
+    tStack<int> stack = tCreateStack<int>();    //初始化栈
+    push(stack, graph.vertices[0].data);       //将根节点放入栈中
+    visited[0] = true;
+    while (!empty(stack)) {                         //当栈不空时，代表还有节点未遍历
+        int temp = pop(stack);                //节点出栈
+        int index = indexAL(graph, temp);
+        push(queue, temp);                                //节点输出入队
+
+        for (int w = FirstNeighbor(graph, temp); w >= 0; w = NextNeighbor(graph, temp, graph.vertices[w].data)) {
+            if (!visited[w]) {
+                push(stack, graph.vertices[w].data);
+                visited[w] = true;
+            }
+        }
+    }
+    return queue;
+}
+
+void runDFS1() {
+    ALGraph G = createALHand1();
+    tQueue<int> queue = DFS(G);
+    while (!empty(queue)) {
+        tLog(pop(queue));
+    }
+}
+
+void runD2() {
+    ALGraph G = CreateALGraph(5, false);
+    tQueue<int> queue = DFS(G);
+    while (!empty(queue)) {
+        tLog(pop(queue));
+    }
+    MGraph graph = MGraph(5, false);
+    queue = DFS(graph);
+    while (!empty(queue)) {
+        tLog(pop(queue));
+    }
+}
+
+void runDFS2() {
+    MGraph G = createMHand1();
+    tQueue<int> queue = DFS(G);
+    while (!empty(queue)) {
+        tLog(pop(queue));
+    }
+}
+
+void runDFS() {
+    runDFS1();
 }

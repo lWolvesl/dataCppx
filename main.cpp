@@ -1,5 +1,5 @@
 #include "./tools.cpp"
-#include "chapter6/DFS.cpp"
+#include "chapter6/BFS.cpp"
 
 void hello() {
     tLog("Hello!");
@@ -12,16 +12,7 @@ void hello() {
  * 请将运行时代码填入此方法
  */
 void runCode() {
-    ALGraph G = CreateALGraph(5, false);
-    tQueue<int> queue = DFS(G);
-    while (!empty(queue)) {
-        tLog(pop(queue));
-    }
-    MGraph graph = MGraph(5, false);
-    queue = DFS(graph);
-    while (!empty(queue)) {
-        tLog(pop(queue));
-    }
+    runBFS();
 }
 
 int main() {

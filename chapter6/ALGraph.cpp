@@ -285,7 +285,7 @@ int FirstNeighbor(ALGraph G, int x) {
     }
     ArcNode *node = G.vertices[m].first;
     if (node) {
-        return node->adjvex;
+        return indexAL(G, node->adjvex);
     }
     return -1;
 }
@@ -308,7 +308,7 @@ int NextNeighbor(ALGraph G, int x, int y) {
     while (node) {
         if (node->adjvex == y) {
             if (node->next) {
-                return node->next->adjvex;
+                return indexAL(G, node->next->adjvex);
             }
         }
         node = node->next;
@@ -442,6 +442,50 @@ ALGraph createALHand() {
     AddEdge(G, 36, 84);
     AddEdge(G, 43, 36);
     AddEdge(G, 80, 68);
+    tPrintTimeInfo();
+    cout << "共有 " << G.vexnum << " 个顶点和 " << G.arcnum << " 条弧" << endl;
+    return G;
+}
+
+/**
+ * 手动创建一个无向图，含有5个顶点和4条弧
+ *    图示 王道2023 年 P226 图 6.17  /  当前文件夹中的 IMG_6_1.jpg
+ * @return
+ */
+ALGraph createALHand1() {
+    ALGraph G;
+    G.directed = true;
+    G.arcnum = 0;
+    G.vexnum = 0;
+    InsertVertex(G, 1);
+    InsertVertex(G, 2);
+    InsertVertex(G, 3);
+    InsertVertex(G, 4);
+    InsertVertex(G, 5);
+
+    AddEdge(G, 1, 2);
+    AddEdge(G, 1, 5);
+    AddEdge(G, 2, 5);
+    AddEdge(G, 5, 2);
+    AddEdge(G, 2, 3);
+    AddEdge(G, 3, 4);
+    AddEdge(G, 4, 3);
+    AddEdge(G, 5, 4);
+    AddEdge(G, 4, 1);
+    AddEdge(G, 5, 3);
+
+    // 赋权值
+    Set_edge_value(G, 1, 2, 10);
+    Set_edge_value(G, 1, 5, 5);
+    Set_edge_value(G, 2, 5, 2);
+    Set_edge_value(G, 5, 2, 3);
+    Set_edge_value(G, 2, 3, 1);
+    Set_edge_value(G, 3, 4, 4);
+    Set_edge_value(G, 4, 3, 6);
+    Set_edge_value(G, 5, 4, 2);
+    Set_edge_value(G, 4, 1, 7);
+    Set_edge_value(G, 5, 3, 9);
+
     tPrintTimeInfo();
     cout << "共有 " << G.vexnum << " 个顶点和 " << G.arcnum << " 条弧" << endl;
     return G;
