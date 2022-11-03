@@ -79,7 +79,7 @@ SeqList getSeq() {
  */
 int Binary_Search(SeqList L, int key) {
     int low = 0, high = L.TableLen - 1, mid;
-    while (low < high) {
+    while (low <= high) {
         mid = (low + high) / 2;
         if (L.elem[mid] == key) {
             return mid;

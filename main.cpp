@@ -1,5 +1,5 @@
 #include "./tools.cpp"
-#include "chapter7/Linear.cpp"
+#include "chapter7/exercises7_2_5.cpp"
 
 void hello() {
     tLog("Hello!");
