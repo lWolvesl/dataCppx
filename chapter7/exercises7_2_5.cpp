@@ -126,7 +126,7 @@ x_7_Node *createNew(int value) {
 }
 
 /**
- * 第七题所用链表结构的热查找算法实现
+ * 7.所用链表结构的热查找算法实现
  * @param head
  * @param key
  * @param len
@@ -160,7 +160,7 @@ int exercises7_2(x_7_Node *head, int key, int len) {
 
 //测试第七题方法2
 void test7_2() {
-    x_7_Node *node = createNew(6);
+    x_7_Node *node = createNew(6);      //构建链表数组
     x_7_Node *head = node;
     node->next = createNew(7);
     node = node->next;
@@ -179,6 +179,7 @@ void test7_2() {
     node->next = createNew(42);
     node = node->next;
     node->next = createNew(55);
+    exercises7_2(head, 18, 10);
     exercises7_2(head, 18, 10);
     exercises7_2(head, 18, 10);
     exercises7_2(head, 18, 10);
