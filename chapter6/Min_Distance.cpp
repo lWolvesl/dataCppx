@@ -3,13 +3,21 @@
 //
 #include "../tools.cpp"
 #include "./ALGraph.cpp"
+#include "./MGraph.cpp"
 
 // 设置不可达为 999999，也可以将此值改为int最大值
 #define Unreachable 999999
 
 // 记录距离
 int dist[MaxVertexNum];
+
 bool visited[MaxVertexNum];
+
+// 标识路径
+int path[MaxVertexNum];
+
+// 弗洛伊德缓存阵列
+int flo[MaxVertexNum][MaxVertexNum];
 
 /**
  * 单源路径最短长度
@@ -53,9 +61,6 @@ void testBFS_MIN() {
         tLog(dist[i]);
     }
 }
-
-// 标识路径
-int path[MaxVertexNum];
 
 /**
  * 不适用于带有负权值边的图
@@ -133,4 +138,16 @@ void testDj() {
     for (int i = 0; i < G.vexnum; ++i) {
         tLog(path[i]);
     }
+}
+
+void Floyd() {
+
+}
+
+void testFlo() {
+    MGraph G = createMHand2();
+}
+
+void runMin() {
+    testFlo();
 }

@@ -439,6 +439,38 @@ MGraph createMHand1() {
 }
 
 /**
+ * 手动创建一个无向图，含有5个顶点和4条弧
+ *    图示 王道2023 年 P227 图 6.19  /  当前文件夹中的 IMG_6_2.jpg
+ * @return
+ */
+MGraph createMHand2() {
+    MGraph G;
+    G.directed = true;
+    G.arcnum = 0;
+    G.vexnum = 0;
+    G.InsertVertex(0);
+    G.InsertVertex(1);
+    G.InsertVertex(2);
+
+    G.AddEdge(0, 2);
+    G.AddEdge(2, 0);
+    G.AddEdge(0, 1);
+    G.AddEdge(1, 0);
+    G.AddEdge(1, 2);
+
+    // 赋权值
+    G.Set_edge_value(0, 1, 6);
+    G.Set_edge_value(1, 0, 10);
+    G.Set_edge_value(0, 2, 13);
+    G.Set_edge_value(2, 0, 5);
+    G.Set_edge_value(1, 2, 4);
+
+    tPrintTimeInfo();
+    cout << "共有 " << G.vexnum << " 个顶点和 " << G.arcnum << " 条弧" << endl;
+    return G;
+}
+
+/**
  *
  */
 void testM() {

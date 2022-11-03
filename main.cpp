@@ -1,5 +1,5 @@
 #include "./tools.cpp"
-#include "chapter6/BFS.cpp"
+#include "chapter7/Linear.cpp"
 
 void hello() {
     tLog("Hello!");
@@ -12,7 +12,7 @@ void hello() {
  * 请将运行时代码填入此方法
  */
 void runCode() {
-    runBFS();
+    run();
 }
 
 int main() {
@@ -20,7 +20,9 @@ int main() {
     RUN_ENV = 1;
 
     tStart();
+
     runCode();
+
     tEnd();
     return 0;
 }
