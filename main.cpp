@@ -1,5 +1,5 @@
 #include "./tools.cpp"
-#include "chapter7/exercises7_2_5.cpp"
+#include "chapter8/Sort.cpp"
 
 void hello() {
     tLog("Hello!");
@@ -12,7 +12,7 @@ void hello() {
  * 请将运行时代码填入此方法
  */
 void runCode() {
-    run();
+    test();
 }
 
 int main() {
